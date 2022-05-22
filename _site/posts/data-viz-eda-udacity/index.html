@@ -130,7 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/sdhoyt/website"><i class="bi bi-github" role="img" aria-label="Github">
+    <a class="nav-link" href="https://github.com/sdhoyt"><i class="bi bi-github" role="img" aria-label="Github">
 </i> 
  </a>
   </li>  
@@ -442,7 +442,7 @@ memory usage: 22.4+ MB</code></pre>
 <div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>sns.displot(data<span class="op">=</span>bike, x<span class="op">=</span><span class="st">"duration_sec"</span>, bins<span class="op">=</span><span class="dv">50</span>, binrange<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">5000</span>), kind<span class="op">=</span><span class="st">"hist"</span>, hue<span class="op">=</span><span class="st">"member_gender"</span>, alpha <span class="op">=</span> <span class="fl">.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fc99d209190&gt;</code></pre>
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fddfb927f40&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
@@ -455,7 +455,7 @@ memory usage: 22.4+ MB</code></pre>
 <div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>sns.catplot(data<span class="op">=</span>bike, x<span class="op">=</span><span class="st">"member_gender"</span>, y<span class="op">=</span><span class="st">"duration_sec"</span>, kind<span class="op">=</span><span class="st">"box"</span>, sym<span class="op">=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fc978a12dc0&gt;</code></pre>
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fddfc4ffdf0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
@@ -481,7 +481,7 @@ memory usage: 22.4+ MB</code></pre>
 <div class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sns.catplot(data<span class="op">=</span>bike, x<span class="op">=</span><span class="st">"user_type"</span>, y<span class="op">=</span><span class="st">"duration_sec"</span>, kind<span class="op">=</span><span class="st">"box"</span>, sym<span class="op">=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fc99c068ca0&gt;</code></pre>
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fdde9decc70&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-19-output-2.png" class="img-fluid"></p>
@@ -510,7 +510,7 @@ memory usage: 22.4+ MB</code></pre>
 <div class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sns.catplot(data<span class="op">=</span>bike, x<span class="op">=</span><span class="st">"user_type"</span>, y<span class="op">=</span><span class="st">"member_birth_year"</span>, kind<span class="op">=</span><span class="st">"box"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fc96a5b3d60&gt;</code></pre>
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7fddfaf250d0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-21-output-2.png" class="img-fluid"></p>

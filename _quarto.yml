@@ -2,15 +2,13 @@ project:
   type: website
 
 website:
-  #repo-url: https://github.com/sdhoyt/website
-  #repo-actions: [edit, issue]
   search: false
   title: "Sean Hoyt"
   navbar:
     background: primary
-    right:
+    left:
       - icon: github 
-        href: https://github.com/sdhoyt/website
+        href: https://github.com/sdhoyt
         aria-label: Github
       - icon: linkedin
         href: https://www.linkedin.com/in/sean-hoyt-6b919570/
