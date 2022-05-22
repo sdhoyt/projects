@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Sean Hoyt - Posts</title>
+<title>Sean Hoyt - Projects</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,9 +56,9 @@ ul.task-list{list-style: none;}
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-author','listing-date','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -113,13 +113,13 @@ ul.task-list{list-style: none;}
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(7)</span></div><div class="category" data-category="animation">animation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="classification">classification <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-cleaning">data-cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data-viz">data-viz <span class="quarto-category-count">(3)</span></div><div class="category" data-category="eda">eda <span class="quarto-category-count">(2)</span></div><div class="category" data-category="inference">inference <span class="quarto-category-count">(2)</span></div><div class="category" data-category="model-eval">model-eval <span class="quarto-category-count">(1)</span></div><div class="category" data-category="python">python <span class="quarto-category-count">(5)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidy-tuesday">tidy-tuesday <span class="quarto-category-count">(2)</span></div><div class="category" data-category="udacity">udacity <span class="quarto-category-count">(5)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(7)</span></div><div class="category" data-category="animation">animation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="classification">classification <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-cleaning">data-cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data-viz">data-viz <span class="quarto-category-count">(3)</span></div><div class="category" data-category="eda">eda <span class="quarto-category-count">(2)</span></div><div class="category" data-category="inference">inference <span class="quarto-category-count">(2)</span></div><div class="category" data-category="model-eval">model-eval <span class="quarto-category-count">(1)</span></div><div class="category" data-category="python">python <span class="quarto-category-count">(5)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tidy-tuesday">tidy-tuesday <span class="quarto-category-count">(2)</span></div><div class="category" data-category="udacity">udacity <span class="quarto-category-count">(5)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Posts</h1>
+<h1 class="title">Projects</h1>
 </div>
 
 
@@ -139,18 +139,15 @@ ul.task-list{list-style: none;}
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="R,tidy-tuesday,analysis,data-viz,eda,animation,regression,inference" data-listing-date-sort="1653026400000" data-listing-file-modified-sort="1653199618504" data-listing-reading-time-sort="29.895">
-<div class="body">
-<a href="./posts/alt-fuel-station-analysis/index.html">
-<h3 class="no-anchor listing-title">
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="R,tidy-tuesday,analysis,data-viz,eda,animation,regression,inference" data-listing-date-sort="1653026400000" data-listing-file-modified-sort="1653199618504" data-listing-reading-time-sort="29.895">
+<a href="./posts/alt-fuel-station-analysis/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Alternative Fuel Stations
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
+</h5>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
 R
@@ -177,33 +174,28 @@ regression
 inference
 </div>
 </div>
-<a href="./posts/alt-fuel-station-analysis/index.html">
-<div class="listing-description">
-<p>Tidy Tuesday R analysis on alternative fuel station locations with data visualization and linear regression model inference.</p>
+<div class="card-text listing-description">
+Tidy Tuesday R analysis on alternative fuel station locations with data visualization and linear regression model inference.
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/alt-fuel-station-analysis/index.html">
-<div class="listing-date">
-May 20, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Sean Hoyt
 </div>
+<div class="listing-date">
+May 20, 2022
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="python,udacity,analysis,classification,model-eval" data-listing-date-sort="1652594400000" data-listing-file-modified-sort="1653198111171" data-listing-reading-time-sort="32.78">
-<div class="body">
-<a href="./posts/finding-donars-udacity/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="1" data-categories="python,udacity,analysis,classification,model-eval" data-listing-date-sort="1652594400000" data-listing-file-modified-sort="1653198111171" data-listing-reading-time-sort="32.78">
+<a href="./posts/finding-donars-udacity/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Finding Donors for CharityML
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
+</h5>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('python'); return false;">
 python
@@ -221,33 +213,28 @@ classification
 model-eval
 </div>
 </div>
-<a href="./posts/finding-donars-udacity/index.html">
-<div class="listing-description">
-<p>Udacity supervised learning project: construct and evaluate multiple models to predict whether an individual makes more than $50,000.</p>
+<div class="card-text listing-description">
+Udacity supervised learning project: construct and evaluate multiple models to predict whether an individual makes more than $50,000.
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/finding-donars-udacity/index.html">
-<div class="listing-date">
-May 15, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Sean Hoyt
 </div>
+<div class="listing-date">
+May 15, 2022
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="R,tidy-tuesday,analysis,classification" data-listing-date-sort="1651125600000" data-listing-file-modified-sort="1653199897751" data-listing-reading-time-sort="4.475">
-<div class="body">
-<a href="./posts/palmer-penguins/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="2" data-categories="R,tidy-tuesday,analysis,classification" data-listing-date-sort="1651125600000" data-listing-file-modified-sort="1653199897751" data-listing-reading-time-sort="4.475">
+<a href="./posts/palmer-penguins/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Palmer Penguins
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
+</h5>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
 R
@@ -262,33 +249,28 @@ analysis
 classification
 </div>
 </div>
-<a href="./posts/palmer-penguins/index.html">
-<div class="listing-description">
-<p>Predicting penguin species using the bill length and depth.</p>
+<div class="card-text listing-description">
+Predicting penguin species using the bill length and depth.
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/palmer-penguins/index.html">
-<div class="listing-date">
-Apr 28, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Sean Hoyt
 </div>
+<div class="listing-date">
+Apr 28, 2022
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="python,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653198111145" data-listing-reading-time-sort="4.9">
-<div class="body">
-<a href="./posts/data-viz-udacity/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="3" data-categories="python,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653198111145" data-listing-reading-time-sort="4.9">
+<a href="./posts/data-viz-udacity/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Bike Share Station Supply
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
+</h5>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('python'); return false;">
 python
@@ -303,33 +285,28 @@ analysis
 data-viz
 </div>
 </div>
-<a href="./posts/data-viz-udacity/index.html">
-<div class="listing-description">
-<p>Udacity data visualization project</p>
+<div class="card-text listing-description">
+Udacity data visualization project
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/data-viz-udacity/index.html">
-<div class="listing-date">
-Apr 22, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Sean Hoyt
 </div>
+<div class="listing-date">
+Apr 22, 2022
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="python,eda,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653198111156" data-listing-reading-time-sort="12.8">
-<div class="body">
-<a href="./posts/data-viz-eda-udacity/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="4" data-categories="python,eda,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653198111156" data-listing-reading-time-sort="12.8">
+<a href="./posts/data-viz-eda-udacity/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Bike Share Data Exploration
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
+</h5>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('python'); return false;">
 python
@@ -347,33 +324,28 @@ analysis
 data-viz
 </div>
 </div>
-<a href="./posts/data-viz-eda-udacity/index.html">
-<div class="listing-description">
-<p>Udacity data visualization project - EDA</p>
+<div class="card-text listing-description">
+Udacity data visualization project - EDA
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/data-viz-eda-udacity/index.html">
-<div class="listing-date">
-Apr 22, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Sean Hoyt
 </div>
+<div class="listing-date">
+Apr 22, 2022
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="python,udacity,analysis,data-cleaning" data-listing-date-sort="1649138400000" data-listing-file-modified-sort="1653198111173" data-listing-reading-time-sort="9.205">
-<div class="body">
-<a href="./posts/data-wrangling-udacity/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="5" data-categories="python,udacity,analysis,data-cleaning" data-listing-date-sort="1649138400000" data-listing-file-modified-sort="1653198111173" data-listing-reading-time-sort="9.205">
+<a href="./posts/data-wrangling-udacity/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Cleaning WeRateDogs Twitter Data
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
+</h5>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('python'); return false;">
 python
@@ -388,33 +360,28 @@ analysis
 data-cleaning
 </div>
 </div>
-<a href="./posts/data-wrangling-udacity/index.html">
-<div class="listing-description">
-<p>Udacity data wrangling project</p>
+<div class="card-text listing-description">
+Udacity data wrangling project
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/data-wrangling-udacity/index.html">
-<div class="listing-date">
-Apr 5, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Sean Hoyt
 </div>
+<div class="listing-date">
+Apr 5, 2022
+</div>
+</div>
+</div>
+</div>
 </a>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="python,udacity,analysis,inference" data-listing-date-sort="1647324000000" data-listing-file-modified-sort="1653198111166" data-listing-reading-time-sort="24.35">
-<div class="body">
-<a href="./posts/ab-test-udacity/index.html">
-<h3 class="no-anchor listing-title">
+<div class="g-col-1" data-index="6" data-categories="python,udacity,analysis,regression,inference" data-listing-date-sort="1647324000000" data-listing-file-modified-sort="1653259739402" data-listing-reading-time-sort="24.965">
+<a href="./posts/ab-test-udacity/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Analyze A/B Test Results
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
+</h5>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('python'); return false;">
 python
@@ -425,26 +392,27 @@ udacity
 <div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
 analysis
 </div>
+<div class="listing-category" onclick="window.quartoListingCategory('regression'); return false;">
+regression
+</div>
 <div class="listing-category" onclick="window.quartoListingCategory('inference'); return false;">
 inference
 </div>
 </div>
-<a href="./posts/ab-test-udacity/index.html">
-<div class="listing-description">
-<p>Udacity A/B test project</p>
+<div class="card-text listing-description">
+Udacity A/B test project
 </div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/ab-test-udacity/index.html">
-<div class="listing-date">
-Mar 15, 2022
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Sean Hoyt
 </div>
-</a>
+<div class="listing-date">
+Mar 15, 2022
 </div>
+</div>
+</div>
+</div>
+</a>
 </div>
 </div>
 <div class="listing-no-matching d-none">
