@@ -1,5 +1,5 @@
 ---
-title: "Tidy Tuesday: Palmer Penguins"
+title: "Palmer Penguins"
 description: "Predicting penguin species using the bill length and depth."
 author: "Sean Hoyt"
 date: "4/28/2022"

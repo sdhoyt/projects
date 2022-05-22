@@ -1,6 +1,6 @@
 ---
-title: 'Tidy Tuesday: Alternative Fuel Stations'
-description: Tidy Tuesday R analysis on alternative fuel station locations with data visualization and linear regression model inference
+title: 'Alternative Fuel Stations'
+description: Tidy Tuesday R analysis on alternative fuel station locations with data visualization and linear regression model inference.
 author: "Sean Hoyt"
 date: '2022-05-20'
 categories: [R, tidy-tuesday, analysis, data-viz, eda, animation, regression, inference]
@@ -51,7 +51,6 @@ The main features from the [alternative fuel stations data](https://afdc.energy.
 
 There are two sets of population data we'll use in order to construct a full 2010 - 2020 dataset. The first population dataset contains the years 2010 - 2019 and the second contains 1910 - 2020, but only for every 10 years. We will combine the two datasets to get yearly state populations for all years between 2010 to 2020.
 
-
 The main features from the [2010 to 2019 Census data](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html) that this analysis will focus on are th following:
 
 +--------------------------+--------------------------------------------------------------------------------------+
@@ -66,13 +65,13 @@ The main features from the [2010 to 2019 Census data](https://www.census.gov/dat
 
 The main features from the [1910 - 2020 Census data](https://www.census.gov/data/tables/time-series/dec/density-data-text.html) that this analysis will focus on are the following:
 
-+----------------+--------------------------------------------------------------------+
-| Name           | Description                                                        |
-+================+====================================================================+
-| Name           | Name of the area containing the population (Nation, State, Region) |
-+----------------+--------------------------------------------------------------------+
-| Population     | Resident population estimates                                      |
-+----------------+--------------------------------------------------------------------+
++---------------+--------------------------------------------------------------------+
+| Name          | Description                                                        |
++===============+====================================================================+
+| Name          | Name of the area containing the population (Nation, State, Region) |
++---------------+--------------------------------------------------------------------+
+| Population    | Resident population estimates                                      |
++---------------+--------------------------------------------------------------------+
 
 # Data Wrangling
 
@@ -183,7 +182,7 @@ stations <- stations_raw |>
 
 # Exploratory Data Analysis
 
-### How are Fuel Stations Distributed Across the US
+### Fuel Stations Distribution Across the US
 
 We can create a histogram of stations by their latitude to get a one dimensional view of how they are distributed from south to north. The histograms can be separated based on fuel type to see how the distributions for each vary. Note that the y-axis varies by histogram, so the bar heights themselves are not comparable between plots.
 
@@ -286,6 +285,11 @@ cuml_stations |>
     ggplot(aes(open_date, sum)) +
     geom_line(show.legend = FALSE) + 
     scale_x_datetime(date_break = "year", date_labels = "%Y") + 
+    labs(
+      x = "Station Opening Date", 
+      y = "Total Electric Stations", 
+      title="Total Electric Stations over Time"
+      ) +
     geom_vline(
       xintercept = leaf_volt, 
       linetype="longdash", 
@@ -329,11 +333,6 @@ cuml_stations |>
       label=str_wrap("Telsa Model 3 released", width=10), 
       size=2,
       color="darkred"
-      ) +
-    labs(
-      x = "", 
-      y = "Total Electric Stations", 
-      title="Total Electric Stations over Time"
       ) +
     annotate(
       "segment", 
@@ -447,7 +446,7 @@ By dividing the total number of stations each state has by the area of the state
 
 ```{r}
 # calculate station densities
-pop_station_den <- station_elec |> 
+station_den <- station_elec |> 
   # count the station stations for each state and year
   count(state, open_year, pop_den, area, name="num_stations") |> 
   # group by the state to prepare for a cumulative sum
@@ -479,7 +478,7 @@ pop_station_den <- station_elec |>
 We can plot the newly calculated station densities:
 
 ```{r plot-elec-states-density}
-pop_station_den |> 
+station_den |> 
     filter(open_year == 2020) |> 
     mutate(state = fct_reorder(state, station_density)) |> 
     ggplot(aes(state, station_density)) +
@@ -487,7 +486,7 @@ pop_station_den |>
     coord_flip() +
     labs(
       x="", 
-      y="Electric Station Density (station / sq. mi.)", 
+      y="Electric Station Density (stations / sq. mi.)", 
       title="Electric Station Density by State"
       )
 ```
@@ -499,9 +498,9 @@ pop_station_den |>
 A sufficient number of fuel stations must be created to cover the area of land and the population of people that they are meant to serve. Given that fuel stations are being produced to meet the needs of their land area and population, we can expect to see a positive correlation between the population density of a given state and the station density in that state.
 
 ```{r}
-pop_station_den_2020 <- filter(pop_station_den, open_year==2020)
+station_den_2020 <- filter(station_den, open_year==2020)
 
-pop_station_den_2020 |> 
+station_den_2020 |> 
     ggplot(aes(pop_den, station_density)) +
     geom_point() + 
     # put both axes on log scale to transform exponential data to linear
@@ -511,7 +510,7 @@ pop_station_den_2020 |>
     stat_cor() + 
     geom_text(aes(label=state), check_overlap = TRUE, vjust = 1, hjust = 1) + 
     labs(
-      y="Electric Station Density (station / sq. mi.)", 
+      y="Electric Station Density (stations / sq. mi.)", 
       x = "Population Density (population / sq. mi.)" , 
       title="Do States with Higher Population Densities Have Higher Station Densities?"
       )
@@ -522,7 +521,7 @@ We can build a linear model to make inferences about the relationship. We'll use
 ```{r}
 # build a linear regression model regressing station density onto population density
 lm_mod <- linear_reg() |> 
-  fit(log10(station_density) ~ log10(pop_den), data=pop_station_den_2020)
+  fit(log10(station_density) ~ log10(pop_den), data=station_den_2020)
 
 # get the 95% confidence intervals
 coef <- tidy(lm_mod, conf.int = TRUE, conf.level=0.95) |> 
@@ -543,7 +542,7 @@ Because we used a logarithmic transform for both the predictor and response vari
 We can create an animated version of the plot above to see how the regression line has changed over time:
 
 ```{r}
-pop_station_den |> 
+station_den |> 
   #filter(state == "Wyoming") |> 
   ggplot(aes(pop_den, station_density)) + 
   geom_point(show.legend = FALSE) + 
@@ -555,7 +554,7 @@ pop_station_den |>
   labs(
     title="Population and Station Density Changes over Time", 
     subtitle="Year: {round(frame_time)}",
-    y="Electric Station Density (station / sq. mi.)", 
+    y="Electric Station Density (stations / sq. mi.)", 
     x = "Population Density (population / sq. mi.)" ,
     )
 ```
@@ -567,4 +566,3 @@ It could be interesting to see how this trend evolves over time as more data bec
 ## Conclusion
 
 This analysis focused on understanding the distribution electric fueling stations across the US between the years 2010-2020 and attempted to better understand the relationship between a state's population and the number of stations in the state. Electric vehicle charging station growth rate seems to coincide with the release of popular electric cars which drive larger adoption of electric vehicles and increase the demand for electric charging stations. We also showed a strong correlation between the population density of a state and the number of electric charging stations per square mile in that state. From this, we were able to infer that for every 1% increase in the population density of a state, we can expect, on average, a `r round(coef$estimate, 2)`% $\pm$ `r round(coef$estimate - coef$conf.low, 2)`% increase in the station density for that state. Looking at an animation of this trend through time, the slope and strength of correlation appear to be consistent through much of 2010 - 2020.
-
