@@ -175,8 +175,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">Model Building</a>
   <ul class="collapse">
   <li><a href="#regressing-station-density-on-population-density" id="toc-regressing-station-density-on-population-density" class="nav-link" data-scroll-target="#regressing-station-density-on-population-density">Regressing Station Density on Population Density</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
 </nav>
@@ -851,7 +851,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>The linear regression model shows a strong correlation of 0.93 between the population density of a state and the station density of that state. With this correlation, we have an <span class="math inline">\(R^2\)</span> showing that our model explains about 87% of the variability in the data. We also obtained a p-value of 3.855847^{-22}. This implies that under a null hypothesis that the linear model has a slope of 0, there is a near zero probability that we would find the calculated slope above from random samples of the data. This indicates that the relationship found between population density and station density is statistically significant.</p>
-<p>Because we used a logarithmic transform for both the predictor and response variables, we <strong>cannot</strong> simply infer that for each 1 unit increase in the population density, we expect to see, on average, a 1.04 <span class="math inline">\(\pm\)</span> 0.12 increase in station density. Instead, taking the logarithmic transforms into account, we can infer from this model that for every 1% increase in the population density of a state, we can expect, on average, a 1.04% <span class="math inline">\(\pm\)</span> 0.12% increase in the station density for that state (<a href="https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/">UVA Library StatLab</a>).</p>
+<p>Because we used a logarithmic transform for both the predictor and response variables, we <strong>cannot</strong> simply infer that for each 1 unit increase in the population density, we expect to see, on average, a 1.04 <span class="math inline">\(\pm\)</span> 0.12 increase in station density. Instead, taking the logarithmic transforms into account, we can infer from this model that for every 1% increase in the population density of a state, we can expect, on average, a 1.04% <span class="math inline">\(\pm\)</span> 0.12% increase in the station density for that state (<a href="https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/">UVA Library StatLab</a>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>We can create an animated version of the plot above to see how the regression line has changed over time:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>station_den <span class="sc">|&gt;</span> </span>
@@ -876,15 +876,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The slope of the regression line is fairly stable between 2010 and 2020 and seems to have remained about the same between 2013 and 2020. In addition to the consistency in slope, the correlation appears to be consistent during that time as well. As expected, population densities had negligible change, but there has been a steady rise in electric charging stations as we have seen in previous visualizations. Based on the steady correlations we’re seeing in this animation, it appears that each state is increasing their electric station density at around the same exponential rate (data has been log transformed).</p>
 <p>It could be interesting to see how this trend evolves over time as more data becomes available. We may see the intercept coefficient continue to increase with the electric station density, but the slope relationship between population density and station density remain the same, indicating that there is a stable (and possibly planned) relationship between population density and station density to meet the needs electric vehicle owners across all states.</p>
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
 <p>This analysis focused on understanding the distribution electric fueling stations across the US between the years 2010-2020 and attempted to better understand the relationship between a state’s population and the number of stations in the state. Electric vehicle charging station growth rate seems to coincide with the release of popular electric cars which drive larger adoption of electric vehicles and increase the demand for electric charging stations. We also showed a strong correlation between the population density of a state and the number of electric charging stations per square mile in that state. From this, we were able to infer that for every 1% increase in the population density of a state, we can expect, on average, a 1.04% <span class="math inline">\(\pm\)</span> 0.12% increase in the station density for that state. Looking at an animation of this trend through time, the slope and strength of correlation appear to be consistent through much of 2010 - 2020.</p>
 
 
 </section>
-</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1" role="doc-endnote"><p>Because both the predictor and response variable have undergone a log tranformation, we start with the following equation for our linear model: <span class="math display">\[log(y) = log(x)\beta_1 + \beta_0\]</span> where <span class="math inline">\(y\)</span> is the response variable, <span class="math inline">\(x\)</span> is the predictor variable, <span class="math inline">\(\beta_1\)</span> is the slope of our regression line and <span class="math inline">\(\beta_0\)</span> is our y intercept. Using basic log rules, we can manipulate the equation: <span class="math display">\[y = 10^{log(x) \cdot \beta_1} \cdot 10^{\beta_0}\]</span> <span class="math display">\[=10^{log(x^{\beta_1})} \cdot 10^{\beta_0}\]</span> <span class="math display">\[y =x^{\beta_1} \cdot 10^{\beta_0}\]</span> From here, focusing on the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, we can see that for every 1% increase in the predictor variable (since multiplying a value by <span class="math inline">\(1.01 = 101\%\)</span> means increasing the value by <span class="math inline">\(1\%\)</span>), we get a <span class="math inline">\(\beta_1\%\)</span> increase in the response variable <span class="math display">\[y = (1.01)^{1.04} = 1.010402 = 101.04\%\]</span> In other words, when the predictor variable increases by 1%, the response variable increases by the slope <span class="math inline">\(\beta_1\)</span> as a perentage value (<span class="math inline">\(\beta_1\%\)</span>) or in this case, <span class="math inline">\(1.04\%\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const disableStylesheet = (stylesheets) => {

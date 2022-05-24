@@ -537,7 +537,15 @@ coef |>
 
 The linear regression model shows a strong correlation of `r round(sqrt(glance(lm_mod)$r.squared), 2)` between the population density of a state and the station density of that state. With this correlation, we have an $R^2$ showing that our model explains about `r round(glance(lm_mod)$r.squared, 2) * 100`% of the variability in the data. We also obtained a p-value of `r glance(lm_mod)$p.value`. This implies that under a null hypothesis that the linear model has a slope of 0, there is a near zero probability that we would find the calculated slope above from random samples of the data. This indicates that the relationship found between population density and station density is statistically significant.
 
-Because we used a logarithmic transform for both the predictor and response variables, we **cannot** simply infer that for each 1 unit increase in the population density, we expect to see, on average, a `r round(coef$estimate, 2)` $\pm$ `r round(coef$estimate - coef$conf.low, 2)` increase in station density. Instead, taking the logarithmic transforms into account, we can infer from this model that for every 1% increase in the population density of a state, we can expect, on average, a `r round(coef$estimate, 2)`% $\pm$ `r round(coef$estimate - coef$conf.low, 2)`% increase in the station density for that state ([UVA Library StatLab](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/)).
+Because we used a logarithmic transform for both the predictor and response variables, we **cannot** simply infer that for each 1 unit increase in the population density, we expect to see, on average, a `r round(coef$estimate, 2)` $\pm$ `r round(coef$estimate - coef$conf.low, 2)` increase in station density. Instead, taking the logarithmic transforms into account, we can infer from this model that for every 1% increase in the population density of a state, we can expect, on average, a `r round(coef$estimate, 2)`% $\pm$ `r round(coef$estimate - coef$conf.low, 2)`% increase in the station density for that state ([UVA Library StatLab](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/))[^longnote].
+
+[^longnote]: 
+
+  Because both the predictor and response variable have undergone a log tranformation, we start with the following equation for our linear model: $$log(y) = log(x)\beta_1 + \beta_0$$
+  where $y$ is the response variable, $x$ is the predictor variable, $\beta_1$ is the slope of our regression line and $\beta_0$ is our y intercept.
+  Using basic log rules, we can manipulate the equation: $$y = 10^{log(x) \cdot \beta_1} \cdot 10^{\beta_0}$$ $$=10^{log(x^{\beta_1})} \cdot 10^{\beta_0}$$ $$y =x^{\beta_1} \cdot 10^{\beta_0}$$
+  From here, focusing on the relationship between $x$ and $y$, we can see that for every 1% increase in the predictor variable (since multiplying a value by $1.01 = 101\%$ means increasing the value by $1\%$), we get a $\beta_1\%$ increase in the response variable $$y = (1.01)^{1.04} = 1.010402 = 101.04\%$$
+  In other words, when the predictor variable increases by 1%, the response variable increases by the slope $\beta_1$ as a perentage value ($\beta_1\%$) or in this case, $1.04\%$.
 
 We can create an animated version of the plot above to see how the regression line has changed over time:
 
@@ -563,6 +571,6 @@ The slope of the regression line is fairly stable between 2010 and 2020 and seem
 
 It could be interesting to see how this trend evolves over time as more data becomes available. We may see the intercept coefficient continue to increase with the electric station density, but the slope relationship between population density and station density remain the same, indicating that there is a stable (and possibly planned) relationship between population density and station density to meet the needs electric vehicle owners across all states.
 
-## Conclusion
+# Conclusion
 
 This analysis focused on understanding the distribution electric fueling stations across the US between the years 2010-2020 and attempted to better understand the relationship between a state's population and the number of stations in the state. Electric vehicle charging station growth rate seems to coincide with the release of popular electric cars which drive larger adoption of electric vehicles and increase the demand for electric charging stations. We also showed a strong correlation between the population density of a state and the number of electric charging stations per square mile in that state. From this, we were able to infer that for every 1% increase in the population density of a state, we can expect, on average, a `r round(coef$estimate, 2)`% $\pm$ `r round(coef$estimate - coef$conf.low, 2)`% increase in the station density for that state. Looking at an animation of this trend through time, the slope and strength of correlation appear to be consistent through much of 2010 - 2020.
