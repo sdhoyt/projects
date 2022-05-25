@@ -532,7 +532,7 @@ Name: user_id, dtype: int64</code></pre>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check again if the row with a duplicate user_id is deleted or not</span></span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>df2.user_id.value_counts().head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_9111/377076188.py:4: SettingWithCopyWarning: 
+<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_10622/377076188.py:4: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
@@ -569,7 +569,7 @@ Name: user_id, dtype: int64</code></pre>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>control_cr <span class="op">=</span> df2[df[<span class="st">'group'</span>] <span class="op">==</span> <span class="st">'control'</span>].converted.mean()</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>control_cr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_9111/2805132061.py:1: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_10622/2805132061.py:1: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
   control_cr = df2[df['group'] == 'control'].converted.mean()</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="19">
@@ -581,7 +581,7 @@ Name: user_id, dtype: int64</code></pre>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>treatment_cr <span class="op">=</span> df2[df[<span class="st">'group'</span>] <span class="op">==</span> <span class="st">'treatment'</span>].converted.mean()</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>treatment_cr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_9111/1278796718.py:1: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_10622/1278796718.py:1: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
   treatment_cr = df2[df['group'] == 'treatment'].converted.mean()</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="20">
@@ -692,7 +692,7 @@ Name: user_id, dtype: int64</code></pre>
 <div class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>treatment_sample.mean() <span class="op">-</span> control_sample.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="30">
-<pre><code>0.0013264256650694917</code></pre>
+<pre><code>0.00020428176307300816</code></pre>
 </div>
 </div>
 <p><strong>h. Sampling distribution</strong> <br> Re-create <code>new_page_converted</code> and <code>old_page_converted</code> and find the <span class="math inline">\((p{'}_{new}\)</span> - <span class="math inline">\(p{'}_{old})\)</span> value 10,000 times using the same simulation process you used in parts (a) through (g) above.</p>
@@ -717,7 +717,7 @@ Name: user_id, dtype: int64</code></pre>
 <span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Conversion Rates Sample from the Null"</span>)</span>
 <span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>plt.axvline(obs_diff, color<span class="op">=</span><span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
-<pre><code>&lt;matplotlib.lines.Line2D at 0x7f7fcaec45e0&gt;</code></pre>
+<pre><code>&lt;matplotlib.lines.Line2D at 0x7fb6093035e0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-33-output-2.png" class="img-fluid"></p>
@@ -727,7 +727,7 @@ Name: user_id, dtype: int64</code></pre>
 <div class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>(p_diffs <span class="op">&gt;</span> obs_diff).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="33">
-<pre><code>0.9069</code></pre>
+<pre><code>0.9057</code></pre>
 </div>
 </div>
 <p><strong>k.</strong> Please explain in words what you have just computed in part <strong>j</strong> above.<br>
@@ -798,25 +798,25 @@ Name: user_id, dtype: int64</code></pre>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>df2[[<span class="st">'ab_page'</span>, <span class="st">'old_page'</span>]]<span class="op">=</span>pd.get_dummies(df[<span class="st">'landing_page'</span>])</span>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>df2.drop(<span class="st">'old_page'</span>, axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_9111/2238491058.py:1: SettingWithCopyWarning: 
+<pre><code>/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_10622/2238491058.py:1: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   df2['intercept'] = 1
-/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_9111/2238491058.py:2: SettingWithCopyWarning: 
+/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_10622/2238491058.py:2: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   df2[['ab_page', 'old_page']]=pd.get_dummies(df['landing_page'])
-/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_9111/2238491058.py:2: SettingWithCopyWarning: 
+/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_10622/2238491058.py:2: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   df2[['ab_page', 'old_page']]=pd.get_dummies(df['landing_page'])
-/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_9111/2238491058.py:3: SettingWithCopyWarning: 
+/var/folders/hm/76vk5x9156vcx4df2s8mw2hm0000gn/T/ipykernel_10622/2238491058.py:3: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
@@ -845,7 +845,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
   <td>Dependent Variable:</td>     <td>converted</td>          <td>AIC:</td>        <td>212780.3502</td>
 </tr>
 <tr>
-         <td>Date:</td>        <td>2022-05-23 23:33</td>       <td>BIC:</td>        <td>212801.5095</td>
+         <td>Date:</td>        <td>2022-05-24 22:53</td>       <td>BIC:</td>        <td>212801.5095</td>
 </tr>
 <tr>
    <td>No. Observations:</td>       <td>290584</td>       <td>Log-Likelihood:</td>  <td>-1.0639e+05</td>
@@ -918,7 +918,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
   <td>Dependent Variable:</td>     <td>converted</td>          <td>AIC:</td>        <td>212781.1253</td>
 </tr>
 <tr>
-         <td>Date:</td>        <td>2022-05-23 23:33</td>       <td>BIC:</td>        <td>212823.4439</td>
+         <td>Date:</td>        <td>2022-05-24 22:53</td>       <td>BIC:</td>        <td>212823.4439</td>
 </tr>
 <tr>
    <td>No. Observations:</td>       <td>290584</td>       <td>Log-Likelihood:</td>  <td>-1.0639e+05</td>
@@ -999,7 +999,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
   <td>Dependent Variable:</td>     <td>converted</td>          <td>AIC:</td>        <td>212782.6602</td>
 </tr>
 <tr>
-         <td>Date:</td>        <td>2022-05-23 23:33</td>       <td>BIC:</td>        <td>212846.1381</td>
+         <td>Date:</td>        <td>2022-05-24 22:53</td>       <td>BIC:</td>        <td>212846.1381</td>
 </tr>
 <tr>
    <td>No. Observations:</td>       <td>290584</td>       <td>Log-Likelihood:</td>  <td>-1.0639e+05</td>

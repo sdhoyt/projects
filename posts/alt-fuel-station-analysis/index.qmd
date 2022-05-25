@@ -231,7 +231,7 @@ stations |>
     labs(title="Locations of Each Station Fuel Type")
 ```
 
-From looking at the maps, electric fuel stations seem to vastly outnumber all other fuel stations, with Hydrogen looking to be the least utilized. Biodiesel looks to be very prominent in North Carolina and South Carolina, filling most of the states, as well as the southern part of Minnesota. Ethanol looks to be most prominently used in the Great Lakes and part of the Mid-West.
+From looking at the maps, electric fuel stations seem to vastly outnumber all other fuel stations, with Hydrogen looking to be the least utilized. Biodiesel looks to be very prominent in southern part of Minnesota and Ethanol looks to be most prominently used in the Great Lakes and part of the Mid-West.
 
 Because electric fuel stations are the most prominent type, we can take a more detailed look at that map.
 
