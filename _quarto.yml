@@ -24,9 +24,7 @@ website:
         text: "Website Source" 
 format:
   html:
-    theme:
-      light: flatly
-      dark: darkly
+    theme: flatly
     css: styles.css
 
 editor: visual
