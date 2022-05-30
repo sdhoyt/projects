@@ -2,13 +2,14 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/alt-fuel-station-analysis/index.html",
-      "/posts/finding-donars-udacity/index.html",
-      "/posts/palmer-penguins/index.html",
+      "/posts/2022-05-20-alt-fuel-station-analysis/index.html",
+      "/posts/2022-05-15-finding-donars-udacity/index.html",
+      "/posts/2022-04-28-palmer-penguins/index.html",
       "/posts/data-viz-udacity/index.html",
-      "/posts/data-viz-eda-udacity/index.html",
-      "/posts/data-wrangling-udacity/index.html",
-      "/posts/ab-test-udacity/index.html"
+      "/posts/2022-04-22-data-viz-udacity/index.html",
+      "/posts/2022-04-22-data-viz-eda-udacity/index.html",
+      "/posts/2022-04-05-data-wrangling-udacity/index.html",
+      "/posts/2022-03-15-ab-test-udacity/index.html"
     ]
   }
 ]

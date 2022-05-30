@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.351">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sean Hoyt">
+<meta name="dcterms.date" content="2022-04-05">
+<meta name="description" content="Udacity data wrangling project">
+
+<title>Sean Hoyt - Cleaning WeRateDogs Twitter Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Sean Hoyt</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/sdhoyt"><i class="bi bi-github" role="img" aria-label="Github">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/sean-hoyt-6b919570/"><i class="bi bi-linkedin" role="img" aria-label="Linkedin">
+</i> 
+ </a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#project-wrangling-and-analyze-data" id="toc-project-wrangling-and-analyze-data" class="nav-link active" data-scroll-target="#project-wrangling-and-analyze-data">Project: Wrangling and Analyze Data</a>
+  <ul class="collapse">
+  <li><a href="#data-gathering" id="toc-data-gathering" class="nav-link" data-scroll-target="#data-gathering">Data Gathering</a></li>
+  <li><a href="#assessing-data" id="toc-assessing-data" class="nav-link" data-scroll-target="#assessing-data">Assessing Data</a>
+  <ul class="collapse">
+  <li><a href="#quality-issues" id="toc-quality-issues" class="nav-link" data-scroll-target="#quality-issues">Quality issues</a></li>
+  <li><a href="#tidiness-issues" id="toc-tidiness-issues" class="nav-link" data-scroll-target="#tidiness-issues">Tidiness issues</a></li>
+  </ul></li>
+  <li><a href="#cleaning-data" id="toc-cleaning-data" class="nav-link" data-scroll-target="#cleaning-data">Cleaning Data</a>
+  <ul class="collapse">
+  <li><a href="#issue-1" id="toc-issue-1" class="nav-link" data-scroll-target="#issue-1">Issue #1:</a></li>
+  <li><a href="#issue-2" id="toc-issue-2" class="nav-link" data-scroll-target="#issue-2">Issue #2:</a></li>
+  <li><a href="#issue-3" id="toc-issue-3" class="nav-link" data-scroll-target="#issue-3">Issue #3:</a></li>
+  <li><a href="#issue-4" id="toc-issue-4" class="nav-link" data-scroll-target="#issue-4">Issue #4:</a></li>
+  <li><a href="#issue-5" id="toc-issue-5" class="nav-link" data-scroll-target="#issue-5">Issue #5</a></li>
+  <li><a href="#issue-6" id="toc-issue-6" class="nav-link" data-scroll-target="#issue-6">Issue #6</a></li>
+  <li><a href="#issue-7" id="toc-issue-7" class="nav-link" data-scroll-target="#issue-7">Issue #7</a></li>
+  <li><a href="#issue-8" id="toc-issue-8" class="nav-link" data-scroll-target="#issue-8">Issue #8</a></li>
+  <li><a href="#issue-9" id="toc-issue-9" class="nav-link" data-scroll-target="#issue-9">Issue #9</a></li>
+  <li><a href="#issue-10" id="toc-issue-10" class="nav-link" data-scroll-target="#issue-10">Issue #10</a></li>
+  </ul></li>
+  <li><a href="#storing-data" id="toc-storing-data" class="nav-link" data-scroll-target="#storing-data">Storing Data</a></li>
+  <li><a href="#analyzing-and-visualizing-data" id="toc-analyzing-and-visualizing-data" class="nav-link" data-scroll-target="#analyzing-and-visualizing-data">Analyzing and Visualizing Data</a>
+  <ul class="collapse">
+  <li><a href="#insights" id="toc-insights" class="nav-link" data-scroll-target="#insights">Insights:</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Cleaning WeRateDogs Twitter Data</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">python</div>
+    <div class="quarto-category">udacity</div>
+    <div class="quarto-category">analysis</div>
+    <div class="quarto-category">data-cleaning</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Udacity data wrangling project
+  </div>
+</div>
+
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sean Hoyt </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 5, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://github.com/sdhoyt/udacity-data-wrangling-project">Link to Github repository</a></p>
+<section id="project-wrangling-and-analyze-data" class="level1">
+<h1>Project: Wrangling and Analyze Data</h1>
+<section id="data-gathering" class="level2">
+<h2 class="anchored" data-anchor-id="data-gathering">Data Gathering</h2>
+<p>In the cell below, gather <strong>all</strong> three pieces of data for this project and load them in the notebook. <strong>Note:</strong> the methods required to gather each data are different. 1. Directly download the WeRateDogs Twitter archive data (twitter_archive_enhanced.csv)</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-extensions="{&quot;jupyter_dashboards&quot;:{&quot;version&quot;:1,&quot;views&quot;:{&quot;grid_default&quot;:{&quot;hidden&quot;:true},&quot;report_default&quot;:{&quot;hidden&quot;:true}}}}" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>twitter_archive <span class="op">=</span> pd.read_csv(<span class="st">"twitter-archive-enhanced.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Use the Requests library to download the tweet image prediction (image_predictions.tsv)</li>
+</ol>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>imag_pred <span class="op">=</span> requests.get(<span class="st">"https://d17h27t6h515a5.cloudfront.net/topher/2017/August/599fd2ad_image-predictions/image-predictions.tsv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"image_predictions.tsv"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    f.write(imag_pred.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>image_predictions <span class="op">=</span> pd.read_csv(<span class="st">"image_predictions.tsv"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Use the Tweepy library to query additional data via the Twitter API (tweet_json.txt)</li>
+</ol>
+<p>The code for the Twitter API is below, however it is commented out because I was not able to get the elevated privledges needed to use the API</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import tweepy</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#from tweepy import OAuthHandler</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#import json</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#from timeit import default_timer as timer</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Query Twitter API for each tweet in the Twitter archive and save JSON in a text file</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># These are hidden to comply with Twitter's API terms and conditions</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#consumer_key = 'HIDDEN'</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#consumer_secret = 'HIDDEN'</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#access_token = 'HIDDEN'</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#access_secret = 'HIDDEN'</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#auth = OAuthHandler(consumer_key, consumer_secret)</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#auth.set_access_token(access_token, access_secret)</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#api = tweepy.API(auth, wait_on_rate_limit=True)</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co"> TO STUDENT WITH MOBILE VERIFICATION ISSUES:</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># df_1 is a DataFrame with the twitter_archive_enhanced.csv file. You may have to</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># change line 17 to match the name of your DataFrame with twitter_archive_enhanced.csv</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co"> TO REVIEWER: this student had mobile verification issues so the following</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Twitter API code was sent to this student from a Udacity instructor</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Tweet IDs for which to gather additional data via Twitter's API</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#tweet_ids = df_1.tweet_id.values</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#len(tweet_ids)</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Query Twitter's API for JSON data for each tweet ID in the Twitter archive</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">#count = 0</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#fails_dict = {}</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#start = timer()</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Save each tweet's returned JSON as a new line in a .txt file</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">#with open('tweet_json.txt', 'w') as outfile:</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co">#    # This loop will likely take 20-30 minutes to run because of Twitter's rate limit</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co">#    for tweet_id in tweet_ids:</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="co">#        count += 1</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co">#        print(str(count) + ": " + str(tweet_id))</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co">#        try:</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co">#            tweet = api.get_status(tweet_id, tweet_mode='extended')</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co">#            print("Success")</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="co">#            json.dump(tweet._json, outfile)</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co">#            outfile.write('\n')</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="co">#        except tweepy.TweepError as e:</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="co">#            print("Fail")</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co">#            fails_dict[tweet_id] = e</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="co">#            pass</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="co">#end = timer()</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="co">#print(end - start)</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="co">#print(fails_dict)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tweets <span class="op">=</span> requests.get(<span class="st">'https://video.udacity-data.com/topher/2018/November/5be5fb7d_tweet-json/tweet-json.txt'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'tweet_json.txt'</span>, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        f.write(tweets.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tweet_data <span class="op">=</span> pd.read_json(<span class="st">'tweet_json.txt'</span>, lines<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="assessing-data" class="level2">
+<h2 class="anchored" data-anchor-id="assessing-data">Assessing Data</h2>
+<p>In this section, detect and document at least <strong>eight (8) quality issues and two (2) tidiness issue</strong>. You must use <strong>both</strong> visual assessment programmatic assessement to assess the data.</p>
+<p><strong>Note:</strong> pay attention to the following key points when you access the data.</p>
+<ul>
+<li>You only want original ratings (no retweets) that have images. Though there are 5000+ tweets in the dataset, not all are dog ratings and some are retweets.</li>
+<li>Assessing and cleaning the entire dataset completely would require a lot of time, and is not necessary to practice and demonstrate your skills in data wrangling. Therefore, the requirements of this project are only to assess and clean at least 8 quality issues and at least 2 tidiness issues in this dataset.</li>
+<li>The fact that the rating numerators are greater than the denominators does not need to be cleaned. This <a href="http://knowyourmeme.com/memes/theyre-good-dogs-brent">unique rating system</a> is a big part of the popularity of WeRateDogs.</li>
+<li>You do not need to gather the tweets beyond August 1st, 2017. You can, but note that you won’t be able to gather the image predictions for these tweets since you don’t have access to the algorithm used.</li>
+</ul>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>twitter_archive.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>tweet_id</th>
+      <th>in_reply_to_status_id</th>
+      <th>in_reply_to_user_id</th>
+      <th>timestamp</th>
+      <th>source</th>
+      <th>text</th>
+      <th>retweeted_status_id</th>
+      <th>retweeted_status_user_id</th>
+      <th>retweeted_status_timestamp</th>
+      <th>expanded_urls</th>
+      <th>rating_numerator</th>
+      <th>rating_denominator</th>
+      <th>name</th>
+      <th>doggo</th>
+      <th>floofer</th>
+      <th>pupper</th>
+      <th>puppo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>892420643555336193</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-08-01 16:23:56 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Phineas. He's a mystical boy. Only eve...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/892420643...</td>
+      <td>13</td>
+      <td>10</td>
+      <td>Phineas</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>892177421306343426</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-08-01 00:17:27 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Tilly. She's just checking pup on you....</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/892177421...</td>
+      <td>13</td>
+      <td>10</td>
+      <td>Tilly</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>891815181378084864</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-31 00:18:03 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Archie. He is a rare Norwegian Pouncin...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/891815181...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>Archie</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>891689557279858688</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-30 15:58:51 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Darla. She commenced a snooze mid meal...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/891689557...</td>
+      <td>13</td>
+      <td>10</td>
+      <td>Darla</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>891327558926688256</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-29 16:00:24 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Franklin. He would like you to stop ca...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/891327558...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>Franklin</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Looks like I can use when retweeted_status_id is not null to determine which tweets are retweets. We do not want retweets in this dataset.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>twitter_archive.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2356 entries, 0 to 2355
+Data columns (total 17 columns):
+ #   Column                      Non-Null Count  Dtype  
+---  ------                      --------------  -----  
+ 0   tweet_id                    2356 non-null   int64  
+ 1   in_reply_to_status_id       78 non-null     float64
+ 2   in_reply_to_user_id         78 non-null     float64
+ 3   timestamp                   2356 non-null   object 
+ 4   source                      2356 non-null   object 
+ 5   text                        2356 non-null   object 
+ 6   retweeted_status_id         181 non-null    float64
+ 7   retweeted_status_user_id    181 non-null    float64
+ 8   retweeted_status_timestamp  181 non-null    object 
+ 9   expanded_urls               2297 non-null   object 
+ 10  rating_numerator            2356 non-null   int64  
+ 11  rating_denominator          2356 non-null   int64  
+ 12  name                        2356 non-null   object 
+ 13  doggo                       2356 non-null   object 
+ 14  floofer                     2356 non-null   object 
+ 15  pupper                      2356 non-null   object 
+ 16  puppo                       2356 non-null   object 
+dtypes: float64(4), int64(3), object(10)
+memory usage: 313.0+ KB</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>twitter_archive[twitter_archive.retweeted_status_id.notnull()].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>tweet_id</th>
+      <th>in_reply_to_status_id</th>
+      <th>in_reply_to_user_id</th>
+      <th>timestamp</th>
+      <th>source</th>
+      <th>text</th>
+      <th>retweeted_status_id</th>
+      <th>retweeted_status_user_id</th>
+      <th>retweeted_status_timestamp</th>
+      <th>expanded_urls</th>
+      <th>rating_numerator</th>
+      <th>rating_denominator</th>
+      <th>name</th>
+      <th>doggo</th>
+      <th>floofer</th>
+      <th>pupper</th>
+      <th>puppo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>19</th>
+      <td>888202515573088257</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-21 01:02:36 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>RT @dog_rates: This is Canela. She attempted s...</td>
+      <td>8.874740e+17</td>
+      <td>4.196984e+09</td>
+      <td>2017-07-19 00:47:34 +0000</td>
+      <td>https://twitter.com/dog_rates/status/887473957...</td>
+      <td>13</td>
+      <td>10</td>
+      <td>Canela</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>886054160059072513</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-15 02:45:48 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>RT @Athletics: 12/10 #BATP https://t.co/WxwJmv...</td>
+      <td>8.860537e+17</td>
+      <td>1.960740e+07</td>
+      <td>2017-07-15 02:44:07 +0000</td>
+      <td>https://twitter.com/dog_rates/status/886053434...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>885311592912609280</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-13 01:35:06 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>RT @dog_rates: This is Lilly. She just paralle...</td>
+      <td>8.305833e+17</td>
+      <td>4.196984e+09</td>
+      <td>2017-02-12 01:04:29 +0000</td>
+      <td>https://twitter.com/dog_rates/status/830583320...</td>
+      <td>13</td>
+      <td>10</td>
+      <td>Lilly</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>879130579576475649</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-06-26 00:13:58 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>RT @dog_rates: This is Emmy. She was adopted t...</td>
+      <td>8.780576e+17</td>
+      <td>4.196984e+09</td>
+      <td>2017-06-23 01:10:23 +0000</td>
+      <td>https://twitter.com/dog_rates/status/878057613...</td>
+      <td>14</td>
+      <td>10</td>
+      <td>Emmy</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>878404777348136964</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-06-24 00:09:53 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>RT @dog_rates: Meet Shadow. In an attempt to r...</td>
+      <td>8.782815e+17</td>
+      <td>4.196984e+09</td>
+      <td>2017-06-23 16:00:04 +0000</td>
+      <td>https://www.gofundme.com/3yd6y1c,https://twitt...</td>
+      <td>13</td>
+      <td>10</td>
+      <td>Shadow</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Looks like doggo, floofer, pupper, puppo are different “types” of dogs.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>twitter_archive[twitter_archive.doggo <span class="op">!=</span> <span class="st">"None"</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>tweet_id</th>
+      <th>in_reply_to_status_id</th>
+      <th>in_reply_to_user_id</th>
+      <th>timestamp</th>
+      <th>source</th>
+      <th>text</th>
+      <th>retweeted_status_id</th>
+      <th>retweeted_status_user_id</th>
+      <th>retweeted_status_timestamp</th>
+      <th>expanded_urls</th>
+      <th>rating_numerator</th>
+      <th>rating_denominator</th>
+      <th>name</th>
+      <th>doggo</th>
+      <th>floofer</th>
+      <th>pupper</th>
+      <th>puppo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9</th>
+      <td>890240255349198849</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-26 15:59:51 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Cassie. She is a college pup. Studying...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/890240255...</td>
+      <td>14</td>
+      <td>10</td>
+      <td>Cassie</td>
+      <td>doggo</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>884162670584377345</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-09 21:29:42 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>Meet Yogi. He doesn't have any important dog m...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/884162670...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>Yogi</td>
+      <td>doggo</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>872967104147763200</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-06-09 00:02:31 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>Here's a very large dog. He has a date later. ...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/872967104...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>None</td>
+      <td>doggo</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>108</th>
+      <td>871515927908634625</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-06-04 23:56:03 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Napolean. He's a Raggedy East Nicaragu...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/871515927...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>Napolean</td>
+      <td>doggo</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>871102520638267392</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-06-03 20:33:19 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>Never doubt a doggo 14/10 https://t.co/AbBLh2FZCH</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/animalcog/status/871075758...</td>
+      <td>14</td>
+      <td>10</td>
+      <td>None</td>
+      <td>doggo</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>image_predictions.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2075 entries, 0 to 2074
+Data columns (total 12 columns):
+ #   Column    Non-Null Count  Dtype  
+---  ------    --------------  -----  
+ 0   tweet_id  2075 non-null   int64  
+ 1   jpg_url   2075 non-null   object 
+ 2   img_num   2075 non-null   int64  
+ 3   p1        2075 non-null   object 
+ 4   p1_conf   2075 non-null   float64
+ 5   p1_dog    2075 non-null   bool   
+ 6   p2        2075 non-null   object 
+ 7   p2_conf   2075 non-null   float64
+ 8   p2_dog    2075 non-null   bool   
+ 9   p3        2075 non-null   object 
+ 10  p3_conf   2075 non-null   float64
+ 11  p3_dog    2075 non-null   bool   
+dtypes: bool(3), float64(3), int64(2), object(4)
+memory usage: 152.1+ KB</code></pre>
+</div>
+</div>
+<p>Looks like the dog breeds and other obejcts appear multiple times. These could be considered categories</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>image_predictions.p3.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>Labrador_retriever    79
+Chihuahua             58
+golden_retriever      48
+Eskimo_dog            38
+kelpie                35
+                      ..
+ox                     1
+assault_rifle          1
+axolotl                1
+pot                    1
+banana                 1
+Name: p3, Length: 408, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>image_predictions[image_predictions[<span class="st">'p2_dog'</span>] <span class="op">==</span> <span class="va">False</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>tweet_id</th>
+      <th>jpg_url</th>
+      <th>img_num</th>
+      <th>p1</th>
+      <th>p1_conf</th>
+      <th>p1_dog</th>
+      <th>p2</th>
+      <th>p2_conf</th>
+      <th>p2_dog</th>
+      <th>p3</th>
+      <th>p3_conf</th>
+      <th>p3_dog</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6</th>
+      <td>666051853826850816</td>
+      <td>https://pbs.twimg.com/media/CT5KoJ1WoAAJash.jpg</td>
+      <td>1</td>
+      <td>box_turtle</td>
+      <td>0.933012</td>
+      <td>False</td>
+      <td>mud_turtle</td>
+      <td>0.045885</td>
+      <td>False</td>
+      <td>terrapin</td>
+      <td>0.017885</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>666057090499244032</td>
+      <td>https://pbs.twimg.com/media/CT5PY90WoAAQGLo.jpg</td>
+      <td>1</td>
+      <td>shopping_cart</td>
+      <td>0.962465</td>
+      <td>False</td>
+      <td>shopping_basket</td>
+      <td>0.014594</td>
+      <td>False</td>
+      <td>golden_retriever</td>
+      <td>0.007959</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>666104133288665088</td>
+      <td>https://pbs.twimg.com/media/CT56LSZWoAAlJj2.jpg</td>
+      <td>1</td>
+      <td>hen</td>
+      <td>0.965932</td>
+      <td>False</td>
+      <td>cock</td>
+      <td>0.033919</td>
+      <td>False</td>
+      <td>partridge</td>
+      <td>0.000052</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>666268910803644416</td>
+      <td>https://pbs.twimg.com/media/CT8QCd1WEAADXws.jpg</td>
+      <td>1</td>
+      <td>desktop_computer</td>
+      <td>0.086502</td>
+      <td>False</td>
+      <td>desk</td>
+      <td>0.085547</td>
+      <td>False</td>
+      <td>bookcase</td>
+      <td>0.079480</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>666293911632134144</td>
+      <td>https://pbs.twimg.com/media/CT8mx7KW4AEQu8N.jpg</td>
+      <td>1</td>
+      <td>three-toed_sloth</td>
+      <td>0.914671</td>
+      <td>False</td>
+      <td>otter</td>
+      <td>0.015250</td>
+      <td>False</td>
+      <td>great_grey_owl</td>
+      <td>0.013207</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>886258384151887873</td>
+      <td>https://pbs.twimg.com/media/DEyfTG4UMAE4aE9.jpg</td>
+      <td>1</td>
+      <td>pug</td>
+      <td>0.943575</td>
+      <td>True</td>
+      <td>shower_cap</td>
+      <td>0.025286</td>
+      <td>False</td>
+      <td>Siamese_cat</td>
+      <td>0.002849</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>886680336477933568</td>
+      <td>https://pbs.twimg.com/media/DE4fEDzWAAAyHMM.jpg</td>
+      <td>1</td>
+      <td>convertible</td>
+      <td>0.738995</td>
+      <td>False</td>
+      <td>sports_car</td>
+      <td>0.139952</td>
+      <td>False</td>
+      <td>car_wheel</td>
+      <td>0.044173</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>887343217045368832</td>
+      <td>https://pbs.twimg.com/ext_tw_video_thumb/88734...</td>
+      <td>1</td>
+      <td>Mexican_hairless</td>
+      <td>0.330741</td>
+      <td>True</td>
+      <td>sea_lion</td>
+      <td>0.275645</td>
+      <td>False</td>
+      <td>Weimaraner</td>
+      <td>0.134203</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2052</th>
+      <td>887517139158093824</td>
+      <td>https://pbs.twimg.com/ext_tw_video_thumb/88751...</td>
+      <td>1</td>
+      <td>limousine</td>
+      <td>0.130432</td>
+      <td>False</td>
+      <td>tow_truck</td>
+      <td>0.029175</td>
+      <td>False</td>
+      <td>shopping_cart</td>
+      <td>0.026321</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2074</th>
+      <td>892420643555336193</td>
+      <td>https://pbs.twimg.com/media/DGKD1-bXoAAIAUK.jpg</td>
+      <td>1</td>
+      <td>orange</td>
+      <td>0.097049</td>
+      <td>False</td>
+      <td>bagel</td>
+      <td>0.085851</td>
+      <td>False</td>
+      <td>banana</td>
+      <td>0.076110</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+<p>522 rows × 12 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tweet_data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2354 entries, 0 to 2353
+Data columns (total 31 columns):
+ #   Column                         Non-Null Count  Dtype              
+---  ------                         --------------  -----              
+ 0   created_at                     2354 non-null   datetime64[ns, UTC]
+ 1   id                             2354 non-null   int64              
+ 2   id_str                         2354 non-null   int64              
+ 3   full_text                      2354 non-null   object             
+ 4   truncated                      2354 non-null   bool               
+ 5   display_text_range             2354 non-null   object             
+ 6   entities                       2354 non-null   object             
+ 7   extended_entities              2073 non-null   object             
+ 8   source                         2354 non-null   object             
+ 9   in_reply_to_status_id          78 non-null     float64            
+ 10  in_reply_to_status_id_str      78 non-null     float64            
+ 11  in_reply_to_user_id            78 non-null     float64            
+ 12  in_reply_to_user_id_str        78 non-null     float64            
+ 13  in_reply_to_screen_name        78 non-null     object             
+ 14  user                           2354 non-null   object             
+ 15  geo                            0 non-null      float64            
+ 16  coordinates                    0 non-null      float64            
+ 17  place                          1 non-null      object             
+ 18  contributors                   0 non-null      float64            
+ 19  is_quote_status                2354 non-null   bool               
+ 20  retweet_count                  2354 non-null   int64              
+ 21  favorite_count                 2354 non-null   int64              
+ 22  favorited                      2354 non-null   bool               
+ 23  retweeted                      2354 non-null   bool               
+ 24  possibly_sensitive             2211 non-null   float64            
+ 25  possibly_sensitive_appealable  2211 non-null   float64            
+ 26  lang                           2354 non-null   object             
+ 27  retweeted_status               179 non-null    object             
+ 28  quoted_status_id               29 non-null     float64            
+ 29  quoted_status_id_str           29 non-null     float64            
+ 30  quoted_status                  28 non-null     object             
+dtypes: bool(4), datetime64[ns, UTC](1), float64(11), int64(4), object(11)
+memory usage: 505.9+ KB</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>twitter_archive.name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>0        Phineas
+1          Tilly
+2         Archie
+3          Darla
+4       Franklin
+          ...   
+2351        None
+2352           a
+2353           a
+2354           a
+2355        None
+Name: name, Length: 2356, dtype: object</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>tweet_data.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>0       892420643555336193
+1       892177421306343426
+2       891815181378084864
+3       891689557279858688
+4       891327558926688256
+               ...        
+2349    666049248165822465
+2350    666044226329800704
+2351    666033412701032449
+2352    666029285002620928
+2353    666020888022790149
+Name: id, Length: 2354, dtype: int64</code></pre>
+</div>
+</div>
+<section id="quality-issues" class="level3">
+<h3 class="anchored" data-anchor-id="quality-issues">Quality issues</h3>
+<ol type="1">
+<li><p>There are retweets in the dataset</p></li>
+<li><p>twitter archive timestamp is a string not a time</p></li>
+<li><p>image prediction p1, p2, p3 are strings, not categories</p></li>
+<li><p>all tweet ids are ints, but is not useful mathematically</p></li>
+<li><p>the twitter archive source column has html in it.</p></li>
+<li><p>The source column seems categorical, but is a string.</p></li>
+<li><p>Some dog beeds in the image predictions are lower case and some are upper case</p></li>
+<li><p>Some of the dog names in tweet_data are not names (“None”, “the”, “a”)</p></li>
+</ol>
+</section>
+<section id="tidiness-issues" class="level3">
+<h3 class="anchored" data-anchor-id="tidiness-issues">Tidiness issues</h3>
+<ol type="1">
+<li><p>doggo, floofer pupper, puppo are columns rather than values in a single column.</p></li>
+<li><p>The tweet archive and tweet data are separate tables</p></li>
+</ol>
+</section>
+</section>
+<section id="cleaning-data" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-data">Cleaning Data</h2>
+<p>In this section, clean <strong>all</strong> of the issues you documented while assessing.</p>
+<p><strong>Note:</strong> Make a copy of the original data before cleaning. Cleaning includes merging individual pieces of data according to the rules of <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidy data</a>. The result should be a high-quality and tidy master pandas DataFrame (or DataFrames, if appropriate).</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make copies of original pieces of data</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>twitter_archive_clean <span class="op">=</span> twitter_archive.copy()</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>tweet_data_clean <span class="op">=</span> tweet_data.copy()</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>image_predictions_clean <span class="op">=</span> image_predictions.copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="issue-1" class="level3">
+<h3 class="anchored" data-anchor-id="issue-1">Issue #1:</h3>
+<section id="the-tweet-id-and-id-are-integers-but-they-are-not-useful-mathematically-in-any-way.-because-these-are-referencesidentifiers-for-the-tweets-they-should-be-strings.-we-will-change-each-tweet-id-to-a-string." class="level4">
+<h4 class="anchored" data-anchor-id="the-tweet-id-and-id-are-integers-but-they-are-not-useful-mathematically-in-any-way.-because-these-are-referencesidentifiers-for-the-tweets-they-should-be-strings.-we-will-change-each-tweet-id-to-a-string.">The tweet id and id are integers, but they are not useful mathematically in any way. Because these are references/identifiers for the tweets, they should be strings. We will change each tweet id to a string.</h4>
+</section>
+<section id="code" class="level4">
+<h4 class="anchored" data-anchor-id="code">Code</h4>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>twitter_archive_clean.tweet_id <span class="op">=</span> twitter_archive_clean.tweet_id.astype(<span class="bu">str</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>tweet_data_clean.<span class="bu">id</span> <span class="op">=</span> tweet_data_clean.<span class="bu">id</span>.astype(<span class="bu">str</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.tweet_id <span class="op">=</span> image_predictions_clean.tweet_id.astype(<span class="bu">str</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test" class="level4">
+<h4 class="anchored" data-anchor-id="test">Test</h4>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> twitter_archive_clean.tweet_id.dtype <span class="op">==</span> pd.Series(dtype<span class="op">=</span><span class="bu">str</span>).dtype</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> tweet_data_clean.<span class="bu">id</span>.dtype <span class="op">==</span> pd.Series(dtype<span class="op">=</span><span class="bu">str</span>).dtype</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> image_predictions_clean.tweet_id.dtype <span class="op">==</span> pd.Series(dtype<span class="op">=</span><span class="bu">str</span>).dtype</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="issue-2" class="level3">
+<h3 class="anchored" data-anchor-id="issue-2">Issue #2:</h3>
+<section id="the-tweet-archive-and-tweet-data-are-separate-tables.-these-should-be-combined-into-one-so-we-have-one-table-containing-all-of-the-twitter-data." class="level4">
+<h4 class="anchored" data-anchor-id="the-tweet-archive-and-tweet-data-are-separate-tables.-these-should-be-combined-into-one-so-we-have-one-table-containing-all-of-the-twitter-data.">The tweet archive and tweet data are separate tables. These should be combined into one so we have one table containing all of the twitter data.</h4>
+</section>
+<section id="code-1" class="level4">
+<h4 class="anchored" data-anchor-id="code-1">Code</h4>
+<p>Change the name of the id column in twee_data from id to tweet_id to help with the merge.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>tweet_data_clean.rename(columns<span class="op">=</span>{<span class="st">"id"</span>:<span class="st">"tweet_id"</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>tweet_data_clean.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2354 entries, 0 to 2353
+Data columns (total 31 columns):
+ #   Column                         Non-Null Count  Dtype              
+---  ------                         --------------  -----              
+ 0   created_at                     2354 non-null   datetime64[ns, UTC]
+ 1   tweet_id                       2354 non-null   object             
+ 2   id_str                         2354 non-null   int64              
+ 3   full_text                      2354 non-null   object             
+ 4   truncated                      2354 non-null   bool               
+ 5   display_text_range             2354 non-null   object             
+ 6   entities                       2354 non-null   object             
+ 7   extended_entities              2073 non-null   object             
+ 8   source                         2354 non-null   object             
+ 9   in_reply_to_status_id          78 non-null     float64            
+ 10  in_reply_to_status_id_str      78 non-null     float64            
+ 11  in_reply_to_user_id            78 non-null     float64            
+ 12  in_reply_to_user_id_str        78 non-null     float64            
+ 13  in_reply_to_screen_name        78 non-null     object             
+ 14  user                           2354 non-null   object             
+ 15  geo                            0 non-null      float64            
+ 16  coordinates                    0 non-null      float64            
+ 17  place                          1 non-null      object             
+ 18  contributors                   0 non-null      float64            
+ 19  is_quote_status                2354 non-null   bool               
+ 20  retweet_count                  2354 non-null   int64              
+ 21  favorite_count                 2354 non-null   int64              
+ 22  favorited                      2354 non-null   bool               
+ 23  retweeted                      2354 non-null   bool               
+ 24  possibly_sensitive             2211 non-null   float64            
+ 25  possibly_sensitive_appealable  2211 non-null   float64            
+ 26  lang                           2354 non-null   object             
+ 27  retweeted_status               179 non-null    object             
+ 28  quoted_status_id               29 non-null     float64            
+ 29  quoted_status_id_str           29 non-null     float64            
+ 30  quoted_status                  28 non-null     object             
+dtypes: bool(4), datetime64[ns, UTC](1), float64(11), int64(3), object(12)
+memory usage: 505.9+ KB</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>twitter_archive_clean.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2356 entries, 0 to 2355
+Data columns (total 17 columns):
+ #   Column                      Non-Null Count  Dtype  
+---  ------                      --------------  -----  
+ 0   tweet_id                    2356 non-null   object 
+ 1   in_reply_to_status_id       78 non-null     float64
+ 2   in_reply_to_user_id         78 non-null     float64
+ 3   timestamp                   2356 non-null   object 
+ 4   source                      2356 non-null   object 
+ 5   text                        2356 non-null   object 
+ 6   retweeted_status_id         181 non-null    float64
+ 7   retweeted_status_user_id    181 non-null    float64
+ 8   retweeted_status_timestamp  181 non-null    object 
+ 9   expanded_urls               2297 non-null   object 
+ 10  rating_numerator            2356 non-null   int64  
+ 11  rating_denominator          2356 non-null   int64  
+ 12  name                        2356 non-null   object 
+ 13  doggo                       2356 non-null   object 
+ 14  floofer                     2356 non-null   object 
+ 15  pupper                      2356 non-null   object 
+ 16  puppo                       2356 non-null   object 
+dtypes: float64(4), int64(2), object(11)
+memory usage: 313.0+ KB</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean <span class="op">=</span> pd.merge(twitter_archive_clean, tweet_data_clean[[<span class="st">"tweet_id"</span>, <span class="st">"retweet_count"</span>, <span class="st">"favorite_count"</span>]], on<span class="op">=</span><span class="st">"tweet_id"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are two tweets from the twitter_archive_clean that were not present in the tweet_data_clean, however, these tweets are retweets, so the will soon be removed and we can ignore them for now.</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[full_tweet_data_clean.favorite_count.isnull()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>tweet_id</th>
+      <th>in_reply_to_status_id</th>
+      <th>in_reply_to_user_id</th>
+      <th>timestamp</th>
+      <th>source</th>
+      <th>text</th>
+      <th>retweeted_status_id</th>
+      <th>retweeted_status_user_id</th>
+      <th>retweeted_status_timestamp</th>
+      <th>expanded_urls</th>
+      <th>rating_numerator</th>
+      <th>rating_denominator</th>
+      <th>name</th>
+      <th>doggo</th>
+      <th>floofer</th>
+      <th>pupper</th>
+      <th>puppo</th>
+      <th>retweet_count</th>
+      <th>favorite_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>19</th>
+      <td>888202515573088257</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017-07-21 01:02:36 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>RT @dog_rates: This is Canela. She attempted s...</td>
+      <td>8.874740e+17</td>
+      <td>4.196984e+09</td>
+      <td>2017-07-19 00:47:34 +0000</td>
+      <td>https://twitter.com/dog_rates/status/887473957...</td>
+      <td>13</td>
+      <td>10</td>
+      <td>Canela</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>815</th>
+      <td>771004394259247104</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2016-08-31 15:19:06 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>RT @katieornah: @dog_rates learning a lot at c...</td>
+      <td>7.710021e+17</td>
+      <td>1.732729e+09</td>
+      <td>2016-08-31 15:10:07 +0000</td>
+      <td>https://twitter.com/katieornah/status/77100213...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>pupper</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="test-1" class="level4">
+<h4 class="anchored" data-anchor-id="test-1">Test</h4>
+<p>We can see from .info() that the tables were merged.</p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 2356 entries, 0 to 2355
+Data columns (total 19 columns):
+ #   Column                      Non-Null Count  Dtype  
+---  ------                      --------------  -----  
+ 0   tweet_id                    2356 non-null   object 
+ 1   in_reply_to_status_id       78 non-null     float64
+ 2   in_reply_to_user_id         78 non-null     float64
+ 3   timestamp                   2356 non-null   object 
+ 4   source                      2356 non-null   object 
+ 5   text                        2356 non-null   object 
+ 6   retweeted_status_id         181 non-null    float64
+ 7   retweeted_status_user_id    181 non-null    float64
+ 8   retweeted_status_timestamp  181 non-null    object 
+ 9   expanded_urls               2297 non-null   object 
+ 10  rating_numerator            2356 non-null   int64  
+ 11  rating_denominator          2356 non-null   int64  
+ 12  name                        2356 non-null   object 
+ 13  doggo                       2356 non-null   object 
+ 14  floofer                     2356 non-null   object 
+ 15  pupper                      2356 non-null   object 
+ 16  puppo                       2356 non-null   object 
+ 17  retweet_count               2354 non-null   float64
+ 18  favorite_count              2354 non-null   float64
+dtypes: float64(6), int64(2), object(11)
+memory usage: 368.1+ KB</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="issue-3" class="level3">
+<h3 class="anchored" data-anchor-id="issue-3">Issue #3:</h3>
+<section id="the-retweets-in-the-dataset-should-be-removed-because-we-only-care-about-dog-rating-tweets." class="level4">
+<h4 class="anchored" data-anchor-id="the-retweets-in-the-dataset-should-be-removed-because-we-only-care-about-dog-rating-tweets.">The retweets in the dataset should be removed because we only care about dog rating tweets.</h4>
+</section>
+<section id="code-2" class="level4">
+<h4 class="anchored" data-anchor-id="code-2">Code</h4>
+<p>We can use the retweeted_status_id column to help remove any retweets. If this column is not null, then it is a retweet.</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean <span class="op">=</span> full_tweet_data_clean[full_tweet_data_clean.retweeted_status_id.isnull()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-2" class="level4">
+<h4 class="anchored" data-anchor-id="test-2">Test</h4>
+<p>test to ensure that every value in retweeted_status_id is null (meaning none are retweets)</p>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">all</span>(full_tweet_data_clean.retweeted_status_id.isnull())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="issue-4" class="level3">
+<h3 class="anchored" data-anchor-id="issue-4">Issue #4:</h3>
+<section id="the-timestamp-is-a-string-not-a-time.-this-should-be-converted-to-a-time-object" class="level4">
+<h4 class="anchored" data-anchor-id="the-timestamp-is-a-string-not-a-time.-this-should-be-converted-to-a-time-object">the timestamp is a string, not a time. This should be converted to a time object</h4>
+</section>
+<section id="code-3" class="level4">
+<h4 class="anchored" data-anchor-id="code-3">Code</h4>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.timestamp <span class="op">=</span> pd.to_datetime(full_tweet_data_clean.timestamp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-3" class="level4">
+<h4 class="anchored" data-anchor-id="test-3">Test</h4>
+<p>We can see from .info() that the timestamp column is now a datetime.</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 2175 entries, 0 to 2355
+Data columns (total 19 columns):
+ #   Column                      Non-Null Count  Dtype              
+---  ------                      --------------  -----              
+ 0   tweet_id                    2175 non-null   object             
+ 1   in_reply_to_status_id       78 non-null     float64            
+ 2   in_reply_to_user_id         78 non-null     float64            
+ 3   timestamp                   2175 non-null   datetime64[ns, UTC]
+ 4   source                      2175 non-null   object             
+ 5   text                        2175 non-null   object             
+ 6   retweeted_status_id         0 non-null      float64            
+ 7   retweeted_status_user_id    0 non-null      float64            
+ 8   retweeted_status_timestamp  0 non-null      object             
+ 9   expanded_urls               2117 non-null   object             
+ 10  rating_numerator            2175 non-null   int64              
+ 11  rating_denominator          2175 non-null   int64              
+ 12  name                        2175 non-null   object             
+ 13  doggo                       2175 non-null   object             
+ 14  floofer                     2175 non-null   object             
+ 15  pupper                      2175 non-null   object             
+ 16  puppo                       2175 non-null   object             
+ 17  retweet_count               2175 non-null   float64            
+ 18  favorite_count              2175 non-null   float64            
+dtypes: datetime64[ns, UTC](1), float64(6), int64(2), object(10)
+memory usage: 339.8+ KB</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="issue-5" class="level3">
+<h3 class="anchored" data-anchor-id="issue-5">Issue #5</h3>
+<section id="the-image-predictions-p1-p2-p3-should-be-converted-from-strings-to-categories" class="level4">
+<h4 class="anchored" data-anchor-id="the-image-predictions-p1-p2-p3-should-be-converted-from-strings-to-categories">the image predictions p1, p2, p3 should be converted from strings to categories</h4>
+</section>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.p1 <span class="op">=</span> image_predictions_clean.p1.astype(<span class="st">'category'</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.p2 <span class="op">=</span> image_predictions_clean.p2.astype(<span class="st">'category'</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.p3 <span class="op">=</span> image_predictions_clean.p3.astype(<span class="st">'category'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-4" class="level4">
+<h4 class="anchored" data-anchor-id="test-4">Test</h4>
+<p>The p1, p2, p3 columsn are now of type category</p>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2075 entries, 0 to 2074
+Data columns (total 12 columns):
+ #   Column    Non-Null Count  Dtype   
+---  ------    --------------  -----   
+ 0   tweet_id  2075 non-null   object  
+ 1   jpg_url   2075 non-null   object  
+ 2   img_num   2075 non-null   int64   
+ 3   p1        2075 non-null   category
+ 4   p1_conf   2075 non-null   float64 
+ 5   p1_dog    2075 non-null   bool    
+ 6   p2        2075 non-null   category
+ 7   p2_conf   2075 non-null   float64 
+ 8   p2_dog    2075 non-null   bool    
+ 9   p3        2075 non-null   category
+ 10  p3_conf   2075 non-null   float64 
+ 11  p3_dog    2075 non-null   bool    
+dtypes: bool(3), category(3), float64(3), int64(1), object(2)
+memory usage: 165.4+ KB</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="issue-6" class="level3">
+<h3 class="anchored" data-anchor-id="issue-6">Issue #6</h3>
+<section id="the-source-column-should-have-the-html-removed-and-the-source-converted-to-a-cateogory" class="level4">
+<h4 class="anchored" data-anchor-id="the-source-column-should-have-the-html-removed-and-the-source-converted-to-a-cateogory">the source column should have the html removed and the source converted to a cateogory</h4>
+</section>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.source[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>'&lt;a href="http://twitter.com/download/iphone" rel="nofollow"&gt;Twitter for iPhone&lt;/a&gt;'</code></pre>
+</div>
+</div>
+<p>Using a regular expression to get the text inside the html tag in the source column (regex source: https://stackoverflow.com/questions/33120584/python-regex-find-string-between-html-tags)</p>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[<span class="st">"source"</span>] <span class="op">=</span> full_tweet_data_clean.source.<span class="bu">str</span>.extract(<span class="vs">r'&gt;(.+?)&lt;'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-5" class="level4">
+<h4 class="anchored" data-anchor-id="test-5">Test</h4>
+<p>We can get the value_counts for the source column to confirm that the sources were properly extracted from the html tag.</p>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.source.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>Twitter for iPhone     2042
+Vine - Make a Scene      91
+Twitter Web Client       31
+TweetDeck                11
+Name: source, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="issue-7" class="level3">
+<h3 class="anchored" data-anchor-id="issue-7">Issue #7</h3>
+<section id="the-source-column-is-a-string-but-should-be-converted-to-a-category." class="level4">
+<h4 class="anchored" data-anchor-id="the-source-column-is-a-string-but-should-be-converted-to-a-category.">The source column is a string, but should be converted to a category.</h4>
+</section>
+<section id="code-6" class="level4">
+<h4 class="anchored" data-anchor-id="code-6">Code</h4>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.source <span class="op">=</span> full_tweet_data_clean.source.astype(<span class="st">'category'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-6" class="level4">
+<h4 class="anchored" data-anchor-id="test-6">Test</h4>
+<p>We can use .info() to confirm that the source column has been converted to a category</p>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 2175 entries, 0 to 2355
+Data columns (total 19 columns):
+ #   Column                      Non-Null Count  Dtype              
+---  ------                      --------------  -----              
+ 0   tweet_id                    2175 non-null   object             
+ 1   in_reply_to_status_id       78 non-null     float64            
+ 2   in_reply_to_user_id         78 non-null     float64            
+ 3   timestamp                   2175 non-null   datetime64[ns, UTC]
+ 4   source                      2175 non-null   category           
+ 5   text                        2175 non-null   object             
+ 6   retweeted_status_id         0 non-null      float64            
+ 7   retweeted_status_user_id    0 non-null      float64            
+ 8   retweeted_status_timestamp  0 non-null      object             
+ 9   expanded_urls               2117 non-null   object             
+ 10  rating_numerator            2175 non-null   int64              
+ 11  rating_denominator          2175 non-null   int64              
+ 12  name                        2175 non-null   object             
+ 13  doggo                       2175 non-null   object             
+ 14  floofer                     2175 non-null   object             
+ 15  pupper                      2175 non-null   object             
+ 16  puppo                       2175 non-null   object             
+ 17  retweet_count               2175 non-null   float64            
+ 18  favorite_count              2175 non-null   float64            
+dtypes: category(1), datetime64[ns, UTC](1), float64(6), int64(2), object(9)
+memory usage: 389.7+ KB</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="issue-8" class="level3">
+<h3 class="anchored" data-anchor-id="issue-8">Issue #8</h3>
+<section id="some-dog-beeds-in-the-image-predictions-are-lower-case-and-some-are-upper-case.-these-should-be-changed-to-all-lower-case-for-consistency." class="level4">
+<h4 class="anchored" data-anchor-id="some-dog-beeds-in-the-image-predictions-are-lower-case-and-some-are-upper-case.-these-should-be-changed-to-all-lower-case-for-consistency.">Some dog beeds in the image predictions are lower case and some are upper case. These should be changed to all lower case for consistency.</h4>
+</section>
+<section id="code-7" class="level4">
+<h4 class="anchored" data-anchor-id="code-7">Code</h4>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.p1 <span class="op">=</span> image_predictions_clean.p1.<span class="bu">str</span>.lower()</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.p2 <span class="op">=</span> image_predictions_clean.p2.<span class="bu">str</span>.lower()</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.p3 <span class="op">=</span> image_predictions_clean.p3.<span class="bu">str</span>.lower()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-7" class="level4">
+<h4 class="anchored" data-anchor-id="test-7">Test</h4>
+<p>.islower() returns True if all characters are lower case and false if at least one is not lower case. Using this method, we can confirm that all were converted to lower.</p>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">all</span>(image_predictions_clean.p1.<span class="bu">str</span>.islower())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="issue-9" class="level3">
+<h3 class="anchored" data-anchor-id="issue-9">Issue #9</h3>
+<section id="some-of-the-dog-names-in-tweet_data-are-not-names-none-the-a.-these-should-all-be-made-null-to-indicate-that-there-is-no-name-available." class="level4">
+<h4 class="anchored" data-anchor-id="some-of-the-dog-names-in-tweet_data-are-not-names-none-the-a.-these-should-all-be-made-null-to-indicate-that-there-is-no-name-available.">Some of the dog names in tweet_data are not names (“None”, “the”, “a”). These should all be made null to indicate that there is no name available.</h4>
+</section>
+<section id="code-8" class="level4">
+<h4 class="anchored" data-anchor-id="code-8">Code</h4>
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.name <span class="op">=</span> full_tweet_data_clean.name.replace([<span class="st">"None"</span>, <span class="st">"a"</span>, <span class="st">"an"</span>, <span class="st">"the"</span>, <span class="st">"quite"</span>], np.nan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-8" class="level4">
+<h4 class="anchored" data-anchor-id="test-8">Test</h4>
+<p>Looking at value counts and some samples, we can check to make sure these values are gone. This doesn’t necesarrily mean that all non-names are gone, but it looks like we removed the bulk of the issue and we can iterate and remove more later if more are found.</p>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.name.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre><code>Charlie       11
+Lucy          11
+Oliver        10
+Cooper        10
+Tucker         9
+              ..
+Wishes         1
+Rose           1
+Theo           1
+Fido           1
+Christoper     1
+Name: name, Length: 951, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.name.sample(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre><code>646        Nida
+329       Poppy
+326     Charlie
+1933       Acro
+862       Leela
+1303     Keurig
+1365       Lucy
+2117       Herb
+2212        NaN
+2106        Edd
+Name: name, dtype: object</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="issue-10" class="level3">
+<h3 class="anchored" data-anchor-id="issue-10">Issue #10</h3>
+<section id="doggo-floofer-pupper-puppo-are-columns-rather-than-values-in-a-single-column.-there-should-be-a-single-column-containing-each-type." class="level4">
+<h4 class="anchored" data-anchor-id="doggo-floofer-pupper-puppo-are-columns-rather-than-values-in-a-single-column.-there-should-be-a-single-column-containing-each-type.">doggo, floofer pupper, puppo are columns rather than values in a single column. There should be a single column containing each type.</h4>
+</section>
+<section id="code-9" class="level4">
+<h4 class="anchored" data-anchor-id="code-9">Code</h4>
+<p>First we’ll replace all the None values with empty strings to help with concatenating the column text</p>
+<div class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[<span class="st">"doggo"</span>] <span class="op">=</span> full_tweet_data_clean[<span class="st">"doggo"</span>].replace(<span class="st">"None"</span>, <span class="st">""</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[<span class="st">"floofer"</span>] <span class="op">=</span> full_tweet_data_clean[<span class="st">"floofer"</span>].replace(<span class="st">"None"</span>, <span class="st">""</span>)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[<span class="st">"pupper"</span>] <span class="op">=</span> full_tweet_data_clean[<span class="st">"pupper"</span>].replace(<span class="st">"None"</span>, <span class="st">""</span>)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[<span class="st">"puppo"</span>] <span class="op">=</span> full_tweet_data_clean[<span class="st">"puppo"</span>].replace(<span class="st">"None"</span>, <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we’ll concatentate all the columns into a new columns called dog_stage</p>
+<div class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[<span class="st">"dog_stage"</span>] <span class="op">=</span> full_tweet_data_clean.doggo.<span class="bu">map</span>(<span class="bu">str</span>) <span class="op">+</span> full_tweet_data_clean.floofer.<span class="bu">map</span>(<span class="bu">str</span>) <span class="op">+</span> full_tweet_data_clean.pupper.<span class="bu">map</span>(<span class="bu">str</span>) <span class="op">+</span> full_tweet_data_clean.puppo.<span class="bu">map</span>(<span class="bu">str</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we’ll go back and replace the empty strings back to nans</p>
+<div class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean[<span class="st">"dog_stage"</span>] <span class="op">=</span> full_tweet_data_clean[<span class="st">"dog_stage"</span>].replace(<span class="st">""</span>, np.nan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then drop the old columns</p>
+<div class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.drop(columns<span class="op">=</span>[<span class="st">"doggo"</span>, <span class="st">"floofer"</span>, <span class="st">"pupper"</span>, <span class="st">"puppo"</span>], inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From the value counts we can see that there are a few instances of different stages in the same observations. We can make the convention that any conflicts containing the doggo stage will be resolved by using the doggo stage.</p>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.dog_stage.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="47">
+<pre><code>pupper          224
+doggo            75
+puppo            24
+doggopupper      10
+floofer           9
+doggopuppo        1
+doggofloofer      1
+Name: dog_stage, dtype: int64</code></pre>
+</div>
+</div>
+<p>Using a regular expression, we can replace the values that start with doggo, to only use the doggo type.</p>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.dog_stage <span class="op">=</span> full_tweet_data_clean.dog_stage.replace(<span class="vs">r'doggo\w+'</span>, <span class="st">'doggo'</span>, regex<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then convert this column to be of category type.</p>
+<div class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.dog_stage <span class="op">=</span> full_tweet_data_clean.dog_stage.astype(<span class="st">'category'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-9" class="level4">
+<h4 class="anchored" data-anchor-id="test-9">Test</h4>
+<p>We can use .info() to check that the old columns were removed, the new column exists and it is a category type</p>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 2175 entries, 0 to 2355
+Data columns (total 16 columns):
+ #   Column                      Non-Null Count  Dtype              
+---  ------                      --------------  -----              
+ 0   tweet_id                    2175 non-null   object             
+ 1   in_reply_to_status_id       78 non-null     float64            
+ 2   in_reply_to_user_id         78 non-null     float64            
+ 3   timestamp                   2175 non-null   datetime64[ns, UTC]
+ 4   source                      2175 non-null   category           
+ 5   text                        2175 non-null   object             
+ 6   retweeted_status_id         0 non-null      float64            
+ 7   retweeted_status_user_id    0 non-null      float64            
+ 8   retweeted_status_timestamp  0 non-null      object             
+ 9   expanded_urls               2117 non-null   object             
+ 10  rating_numerator            2175 non-null   int64              
+ 11  rating_denominator          2175 non-null   int64              
+ 12  name                        1423 non-null   object             
+ 13  retweet_count               2175 non-null   float64            
+ 14  favorite_count              2175 non-null   float64            
+ 15  dog_stage                   344 non-null    category           
+dtypes: category(2), datetime64[ns, UTC](1), float64(6), int64(2), object(5)
+memory usage: 324.1+ KB</code></pre>
+</div>
+</div>
+<p>Then we can use value_counts to make sure the correct values are being used in the dog_stage column</p>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.dog_stage.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="51">
+<pre><code>pupper     224
+doggo       87
+puppo       24
+floofer      9
+Name: dog_stage, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="storing-data" class="level2">
+<h2 class="anchored" data-anchor-id="storing-data">Storing Data</h2>
+<p>Save gathered, assessed, and cleaned master dataset to a CSV file named “twitter_archive_master.csv”.</p>
+<div class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>full_tweet_data_clean.to_csv(<span class="st">"twitter_archive_master.csv"</span>)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>image_predictions_clean.to_csv(<span class="st">"image_predictions_master.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="analyzing-and-visualizing-data" class="level2">
+<h2 class="anchored" data-anchor-id="analyzing-and-visualizing-data">Analyzing and Visualizing Data</h2>
+<p>In this section, analyze and visualize your wrangled data. You must produce at least <strong>three (3) insights and one (1) visualization.</strong></p>
+<p>The vast majority of rating ratios were centered between 1 and 1.25. The plot below was cut off at 2 because there are ouliers that fall on the far positive side of the plot.</p>
+<div class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>plt.hist(full_tweet_data_clean.rating_numerator <span class="op">/</span> full_tweet_data_clean.rating_denominator, bins<span class="op">=</span><span class="dv">10</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>,<span class="dv">2</span>))<span class="op">;</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Rating Ratio"</span>)<span class="op">;</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Tweets"</span>)<span class="op">;</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Rating Ratio Distribution"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-54-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Based on the below plot, it appears that the favorite counts grew steadily over time, but also had an increase in variance along the y axis.</p>
+<div class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> full_tweet_data_clean.plot(x<span class="op">=</span><span class="st">"timestamp"</span>, y<span class="op">=</span><span class="st">"favorite_count"</span>, title<span class="op">=</span><span class="st">"Favorite Counts Over Time"</span>)<span class="op">;</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>fig.set_xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>fig.set_ylabel(<span class="st">"Favorites"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="54">
+<pre><code>Text(0, 0.5, 'Favorites')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-55-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>From the below plot, we can see that the vast majority of tweets were made from an iphone, and only a few were made from other sources such as TweetDeck, Twitter Web Client, and Vine.</p>
+<div class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> full_tweet_data_clean.source.value_counts().plot.barh(title<span class="op">=</span><span class="st">"Tweet Sources"</span>)<span class="op">;</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>fig.set_xlabel(<span class="st">"Tweets"</span>)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>fig.set_ylabel(<span class="st">"Tweet Source"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="55">
+<pre><code>Text(0, 0.5, 'Tweet Source')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-56-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="insights" class="level3">
+<h3 class="anchored" data-anchor-id="insights">Insights:</h3>
+<ol type="1">
+<li><p>Most dog rating ratios were between 1 and 1.25 (numerator / denominator)</p></li>
+<li><p>Over time, the favorite counts grew for each tweet on average and the variance of number of favorites each tweet go also seems to have increased over time.</p></li>
+<li><p>The vast majority of tweets were made on an iPhone, but a few other sources were also used: TweetDeck, Twitter Web Client, and Vine.</p></li>
+</ol>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://quarto.org">Made with Quarto</a>
+  </li>  
+    <li class="nav-item">
+ __
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sdhoyt/website">Website Source</a>
+  </li>  
+</ul>
+      </div>
+  </div>
+</footer>
+
+
+
+</body></html>

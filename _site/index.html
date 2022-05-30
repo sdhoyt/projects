@@ -27,12 +27,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+<link id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link class="quarto-color-scheme" href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="site_libs/bootstrap/bootstrap-dark.min.css">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -56,9 +54,9 @@ ul.task-list{list-style: none;}
     }
 
     const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-title","listing-author","listing-date","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -100,9 +98,6 @@ ul.task-list{list-style: none;}
  </a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -113,7 +108,7 @@ ul.task-list{list-style: none;}
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(7)</span></div><div class="category" data-category="animation">animation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="classification">classification <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-cleaning">data-cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data-viz">data-viz <span class="quarto-category-count">(3)</span></div><div class="category" data-category="eda">eda <span class="quarto-category-count">(2)</span></div><div class="category" data-category="inference">inference <span class="quarto-category-count">(2)</span></div><div class="category" data-category="model-eval">model-eval <span class="quarto-category-count">(1)</span></div><div class="category" data-category="python">python <span class="quarto-category-count">(5)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tidy-tuesday">tidy-tuesday <span class="quarto-category-count">(2)</span></div><div class="category" data-category="udacity">udacity <span class="quarto-category-count">(5)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(8)</span></div><div class="category" data-category="animation">animation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="classification">classification <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-cleaning">data-cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data-viz">data-viz <span class="quarto-category-count">(4)</span></div><div class="category" data-category="eda">eda <span class="quarto-category-count">(2)</span></div><div class="category" data-category="inference">inference <span class="quarto-category-count">(2)</span></div><div class="category" data-category="model-eval">model-eval <span class="quarto-category-count">(1)</span></div><div class="category" data-category="python">python <span class="quarto-category-count">(6)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tidy-tuesday">tidy-tuesday <span class="quarto-category-count">(2)</span></div><div class="category" data-category="udacity">udacity <span class="quarto-category-count">(6)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -141,9 +136,12 @@ ul.task-list{list-style: none;}
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="R,tidy-tuesday,analysis,data-viz,eda,animation,regression,inference" data-listing-date-sort="1653026400000" data-listing-file-modified-sort="1653454312802" data-listing-reading-time-sort="30.635">
-<a href="./posts/alt-fuel-station-analysis/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-categories="R,tidy-tuesday,analysis,data-viz,eda,animation,regression,inference" data-listing-date-sort="1653026400000" data-listing-file-modified-sort="1653871098932" data-listing-reading-time-sort="30.59">
+<a href="./posts/2022-05-20-alt-fuel-station-analysis/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-05-20-alt-fuel-station-analysis/fuel-map.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Alternative Fuel Stations
@@ -189,9 +187,12 @@ May 20, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="python,udacity,analysis,classification,model-eval" data-listing-date-sort="1652594400000" data-listing-file-modified-sort="1653198111171" data-listing-reading-time-sort="32.78">
-<a href="./posts/finding-donars-udacity/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-categories="python,udacity,analysis,classification,model-eval" data-listing-date-sort="1652594400000" data-listing-file-modified-sort="1653871098927" data-listing-reading-time-sort="32.77">
+<a href="./posts/2022-05-15-finding-donars-udacity/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-05-15-finding-donars-udacity/model-perform.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Finding Donors for CharityML
@@ -228,9 +229,12 @@ May 15, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="R,tidy-tuesday,analysis,classification" data-listing-date-sort="1651125600000" data-listing-file-modified-sort="1653199897751" data-listing-reading-time-sort="4.475">
-<a href="./posts/palmer-penguins/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="2" data-categories="R,tidy-tuesday,analysis,classification" data-listing-date-sort="1651125600000" data-listing-file-modified-sort="1653871098913" data-listing-reading-time-sort="4.475">
+<a href="./posts/2022-04-28-palmer-penguins/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-04-28-palmer-penguins/penguin-scatter.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Palmer Penguins
@@ -267,6 +271,9 @@ Apr 28, 2022
 <div class="g-col-1" data-index="3" data-categories="python,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653198111145" data-listing-reading-time-sort="4.9">
 <a href="./posts/data-viz-udacity/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<div class="card-img-bg" style="height: 150px;">
+&nbsp;
+</div>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Bike Share Station Supply
@@ -300,9 +307,51 @@ Apr 22, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="python,eda,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653198111156" data-listing-reading-time-sort="12.8">
-<a href="./posts/data-viz-eda-udacity/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="4" data-categories="python,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653871098891" data-listing-reading-time-sort="4.9">
+<a href="./posts/2022-04-22-data-viz-udacity/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-04-22-data-viz-udacity/bike-share.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Bike Share Station Supply
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('python'); return false;">
+python
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('udacity'); return false;">
+udacity
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
+analysis
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('data-viz'); return false;">
+data-viz
+</div>
+</div>
+<div class="card-text listing-description">
+Udacity data visualization project
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Sean Hoyt
+</div>
+<div class="listing-date">
+Apr 22, 2022
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="5" data-categories="python,eda,udacity,analysis,data-viz" data-listing-date-sort="1650607200000" data-listing-file-modified-sort="1653871098871" data-listing-reading-time-sort="12.8">
+<a href="./posts/2022-04-22-data-viz-eda-udacity/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-04-22-data-viz-eda-udacity/hist.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Bike Share Data Exploration
@@ -339,9 +388,12 @@ Apr 22, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-categories="python,udacity,analysis,data-cleaning" data-listing-date-sort="1649138400000" data-listing-file-modified-sort="1653198111173" data-listing-reading-time-sort="9.205">
-<a href="./posts/data-wrangling-udacity/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="6" data-categories="python,udacity,analysis,data-cleaning" data-listing-date-sort="1649138400000" data-listing-file-modified-sort="1653871098862" data-listing-reading-time-sort="9.205">
+<a href="./posts/2022-04-05-data-wrangling-udacity/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-04-05-data-wrangling-udacity/fav-count.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Cleaning WeRateDogs Twitter Data
@@ -375,9 +427,12 @@ Apr 5, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="6" data-categories="python,udacity,analysis,regression,inference" data-listing-date-sort="1647324000000" data-listing-file-modified-sort="1653370394521" data-listing-reading-time-sort="24.965">
-<a href="./posts/ab-test-udacity/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="7" data-categories="python,udacity,analysis,regression,inference" data-listing-date-sort="1647324000000" data-listing-file-modified-sort="1653871098845" data-listing-reading-time-sort="24.965">
+<a href="./posts/2022-03-15-ab-test-udacity/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2022-03-15-ab-test-udacity/hypothesis-test.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Analyze A/B Test Results
@@ -421,103 +476,6 @@ No matching items
 </div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
-      }
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-    } else {
-      disableStylesheet(alternateStylesheets);
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  let localAlternateSentinel = 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } 
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
