@@ -290,14 +290,14 @@ Structure your answer in the same format as above\^, with 4 parts for each of th
 ### Support Vector Machines
 
 -   One real-world application for SVMs is in the classification of cancer genomes (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5822181/). According to the linked article, SVMs are useful for finding subtypes of cancer genomes which are useful for diagnosis and treatment.
--   One strength of SVMs is the use of kernels to take data that is not easily separable for classification and tranform it into a higher dimension to separate the classes and classify the data. One example of this is using the tranform equation $x^2 + y^2$ to tranform data into a third dimension and use a plane to separate the classes. RBF kernels are also useful when a single boundary would not be sufficient to classify the points, such as a case where there are multiple groupings of a class that may need to be separated out by a few circular boundaries.
--   One weakness of support vector machines is that the computation time tends to be larger than the othe methods chosen. SVMs also do not calculate the probability of being a specific class given a predictor variable and cannot be used for inference as can be done with logistic regression.
--   This model is a good candidate because it is a classification model that can handle non-linear class boundaries. For example, there may be multiple clusters in the data where people are likely to make more than 50K per year. Using a SVM and RBF kernels, we can bring those grouping into a higher dimension to separate them out even in the case where there is not a single boundary line that we can draw to sepearate them
+-   One strength of SVMs is the use of kernels to take data that is not easily separable for classification and transform it into a higher dimension to separate the classes and classify the data. One example of this is using the transform equation $x^2 + y^2$ to transform data into a third dimension and use a plane to separate the classes. RBF kernels are also useful when a single boundary would not be sufficient to classify the points, such as a case where there are multiple groupings of a class that may need to be separated out by a few circular boundaries.
+-   One weakness of support vector machines is that the computation time tends to be larger than the other methods chosen. SVMs also do not calculate the probability of being a specific class given a predictor variable and cannot be used for inference as can be done with logistic regression.
+-   This model is a good candidate because it is a classification model that can handle non-linear class boundaries. For example, there may be multiple clusters in the data where people are likely to make more than 50K per year. Using a SVM and RBF kernels, we can bring those grouping into a higher dimension to separate them out even in the case where there is not a single boundary line that we can draw to separate them.
 
 ### Decision Trees
 
--   Decision trees can be useful in the medical industry for things like diagnosis because in addition to classifying, it is possible to see the hiearchy of decisions that the model used to make the classification which provides insights into which features are most important when determining whether someone has a particular illness.
--   Decision trees recursively split data in the direction of the largest separability (information gain) to construct a decision tree using the predictor features to hone in on the correct classification. One advantage of this approach is it allows for the user to gain a better understand the hierarchy of decision making that was used to classify a point and understand which features are most important in the decision making.
+-   Decision trees can be useful in the medical industry for things like diagnosis because in addition to classifying, it is possible to see the hierarchy of decisions that the model used to make the classification which provides insights into which features are most important when determining whether someone has a particular illness.
+-   Decision trees recursively split data in the direction of the largest separability (information gain) to construct a decision tree using the predictor features to hone in on the correct classification. One advantage of this approach is it allows for the user to gain a better understanding of the hierarchy of decision making that was used to classify a point and understand which features are most important in the decision making.
 -   A weakness of decision trees are that they have a tendency to overfit the data. If a decision trees can create a very large hierarchical decision structure with more leaves than necessary which may lean towards memorizing the data.
 -   This model is a good candidate for this analysis because we have many features that can be used to help determine whether someone makes more than 50K per year and we can also use the decision tree structure to get a better understanding of the important factors that are used in determining that classification.
 
@@ -431,9 +431,9 @@ The Random Forest model obtained the highest F score on the testing data when 10
 
 When explaining your model, if using external resources please include all citations.
 
-The Random Forest classifier is an ensemble method that creates multiple decision trees to help create a more generalized model. Decisions trees split the data along one feature to give the highest separability between the classes and continues this process recursively until a classification is found. One of the advantages of decision trees is that in addition to predictions, additional insights can be gained by understanding the hierachy of decisions that were chosen which shows which features were most important when making the prediction. One weakness of decsions trees is that they have a tendency to overfit the data.
+The Random Forest classifier is an ensemble method that creates multiple decision trees to help create a more generalized model. Decisions trees split the data along one feature to give the highest separability between the classes and continues this process recursively until a classification is found. One of the advantages of decision trees is that in addition to predictions, additional insights can be gained by understanding the hierachy of decisions that were chosen which shows which features were most important when making the prediction. One weakness of decisions trees is that they have a tendency to overfit the data.
 
-The Random Forest classifier adds an additional layer onto the decision tree to mitigate issues with overfitting by taking a random subset of features from the training data and constructing a decision tree only using that subset of features. This process is then repeated many times with different random subsets of features from the training data. Then, when trying to classify the point, the class that was chosen most often by all the decision trees will be selected.
+The Random Forest classifier adds an additional layer onto the decision tree to mitigate issues with overfitting by taking a random subset of features from the training data and constructing a decision tree only using that subset of features. This process is then repeated many times with different random subsets of features from the training data. Then, when trying to classify a point, the class that is chosen most often by all the decision trees will be selected.
 
 ### Implementation: Model Tuning
 
@@ -497,7 +497,7 @@ print("Final F-score on the testing data: {:.4f}".format(fbeta_score(y_test, bes
 | Accuracy Score |      0.8412       |     0.8609      |
 |    F-score     |      0.6787       |     0.7310      |
 
-The optimized model achieved an accuracy of 0.86 and F-score of 0.73. The accuracy improve by only 2% compared to the unoptimized model, but the F-score imporved. y 5% compared to the unoptimized model. Compared to the naive predictor, the accuracy increated by almost 10% and the F-score changed form 0 to 0.73.
+The optimized model achieved an accuracy of 0.86 and F-score of 0.73. The accuracy improved by only 2% compared to the unoptimized model, but the F-score improved by 5% compared to the unoptimized model. Compared to the naive predictor, the accuracy increased by almost 10% and the F-score changed form 0 to 0.73.
 
 ## Feature Importance
 
@@ -509,7 +509,7 @@ Choose a scikit-learn classifier (e.g., adaboost, random forests) that has a `fe
 
 When **Exploring the Data**, it was shown there are thirteen available features for each individual on record in the census data. Of these thirteen records, which five features do you believe to be most important for prediction, and in what order would you rank them and why?
 
-Given the thirteen features, I believe the five most important ranked in order will be: \* **age**: People tend to make more money as they get older, making them more likely to make over 50K. \* **education**: People with higher levels of education tend to make more money . \* **capital gain**: The larget the capital gain returns, the more money a person is likely making since you need some excess money to invest in the first place. \* **marital-status**: Two income households will have higher incomes. \* **race**: systemic wealth inequality among races in the US make, for example, white americans to have a higher income on average than black ammericans.
+Given the thirteen features, I believe the five most important ranked in order will be: \* **age**: People tend to make more money as they get older, making them more likely to make over 50K. \* **education**: People with higher levels of education tend to make more money . \* **capital gain**: The larger the capital gain returns, the more money a person is likely making since you need some excess money to invest in the first place. \* **marital-status**: Two income households will have higher incomes. \* **race**: due to systemic wealth inequality among races in the US, white Americans, for example, tend to have a higher income on average than black Americans.
 
 ### Implementation - Extracting Feature Importance
 
@@ -537,7 +537,7 @@ vs.feature_plot(importances, X_train, y_train)
 Observe the visualization created above which displays the five most relevant features for predicting if an individual makes at most or above \$50,000.\
 \* How do these five features compare to the five features you discussed in **Question 6**? \* If you were close to the same answer, how does this visualization confirm your thoughts? \* If you were not close, why do you think these features are more relevant?
 
-I correctly guessed 3 of the 5 features with all 3 being at the correct rank. I am not sure what 'education-num' means in the data so I did not select that on; I instead chose 'education', which I ranked in the #2 spot. I did not select hours per week because I thought that observations with long hours could be a mix of people multiple low paying jobs and make less than 50K or work high pressure, high paying jobs and make more than 50K which would make that difficult to use for classification.
+I correctly guessed 3 of the 5 features with all 3 being at the correct rank. I am not sure what 'education-num' means in the data so I did not select that; I instead chose 'education', which I ranked in the #2 spot. I did not select hours per week because I thought that observations with long hours could be a mix of people with multiple low paying jobs who make less than 50K or people who work high pressure, high paying jobs and make more than 50K. This mix would make that difficult to use for classification.
 
 ### Feature Selection
 
@@ -572,4 +572,4 @@ print("F-score on testing data: {:.4f}".format(fbeta_score(y_test, reduced_predi
 -   How does the final model's F-score and accuracy score on the reduced data using only five features compare to those same scores when all features are used?
 -   If training time was a factor, would you consider using the reduced data as your training set?
 
-The metrics form the reduced data had a somewhat significant decrease and are closer to the values found from the unoptimized models. Because the Random Forest model did not take large amounts of computing time, I would likely stick with the full data or add a few more features to the reduced data to increase the F-score.
+The metrics from the reduced data had a somewhat significant decrease and are closer to the values found from the unoptimized models. Because the Random Forest model did not take large amounts of computing time, I would likely stick with the full data or add a few more features to the reduced data to increase the F-score.
